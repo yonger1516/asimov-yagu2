@@ -29,7 +29,7 @@
         <default_branding_file>default.target</default_branding_file>
         <oc_version>3</oc_version>
         <ip_version>4</ip_version>
-        <start_checks>false</start_checks>
+        <start_checks>true</start_checks>
         <testrunner></testrunner>
         <logcatLevel>DEBUG</logcatLevel>
         <logLevel>TRACE</logLevel>
