@@ -45,6 +45,7 @@ public class LogcatUtil {
     private LogcatStopCondition stopCondition = null;
     private Thread callerThread = null;
 
+    private volatile boolean isStop=false;
     public LogcatStopCondition getStopCondition() {
         return stopCondition;
     }
@@ -129,7 +130,8 @@ public class LogcatUtil {
         logger.info("Stopping logcat thread [Time = " + System.currentTimeMillis() + "  ,DateTime = " + new Date(System.currentTimeMillis()) + "]");
         if (logcatStream != null)
             logcatStream.stopReading();
-        logcatThread.interrupt();
+        //logcatThread.interrupt();
+        isStop=true;
         logcatThread.join();
         logcatState = LogcatState.Stopped;
     }
@@ -156,7 +158,7 @@ public class LogcatUtil {
                 reader = new BufferedReader(new InputStreamReader(logcatStream));
                 String line;
                 int lineNumber = 0;
-                while ((line = reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null&& !isStop) {
                     debugWriter.write(line);
                     debugWriter.newLine();
                     lastEntry = line;
