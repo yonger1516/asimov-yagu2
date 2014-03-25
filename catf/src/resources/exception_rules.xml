@@ -1,37 +1,4 @@
 <?xml version="1.0"?>
 <exceptions>
-    <!--<exception>
-        <sourceClass>com.seven.asimov.it.complex.functional.Tests</sourceClass>
-        <sourceMethod>test_002</sourceMethod>
-        <throwableClass>java.lang.IllegalArgumentException</throwableClass>
-        <logMessage>IllegalArgumentException in test_002</logMessage>
-    </exception>
 
-    <exception>
-        <sourceClass>com.seven.asimov.it.complex.functional.Tests</sourceClass>
-        <sourceMethod>test_003</sourceMethod>
-        <throwableClass>java.lang.IllegalStateException</throwableClass>
-        <logMessage>IllegalStateException in test_003</logMessage>
-    </exception>
-
-    <exception>
-        <sourceClass>com.seven.asimov.it.complex.functional.Tests</sourceClass>
-        <sourceMethod>test_002</sourceMethod>
-        <throwableClass>java.io.FileNotFoundException</throwableClass>
-        <logMessage>FileNotFoundException in test_002</logMessage>
-    </exception>
-
-    <exception>
-        <sourceClass>com.seven.asimov.it.complex.functional.Tests</sourceClass>
-        <sourceMethod>execSimple</sourceMethod>
-        <throwableClass>java.lang.IOException</throwableClass>
-        <logMessage>Message for test1 IllegalStateException</logMessage>
-    </exception>
-
-    <exception>
-        <sourceClass>com.seven.asimov.it.complex.functional.Tests</sourceClass>
-        <sourceMethod>test_002</sourceMethod>
-        <throwableClass>java.lang.IllegalStateException</throwableClass>
-        <logMessage>IllegalStateExceptionin test_002</logMessage>
-    </exception> -->
 </exceptions>
