@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.seven.asimov.test.tool"
+          android:versionCode="${versionCode}"
+          android:versionName="${versionName}">
+
+    <!--<instrumentation-->
+    <!--android:name="com.seven.asimov.it.IntegrationTestRunnerGa"-->
+    <!--android:targetPackage="com.seven.asimov.test.tool" />-->
+
+    <application
+            android:debuggable="true"
+            android:description="@string/app_description"
+            android:icon="@drawable/icon"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+
+        <uses-library android:name="android.test.runner"/>
+        <activity
+                android:name=".activity.RootTab"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN">
+                </action>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.MainTab"
+                android:label="@string/app_name">
+            <intent-filter>
+                <category android:name="android.intent.category.EMBED">
+                </category>
+
+                <action android:name="android.intent.action.MAIN">
+                </action>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.AdminTab"
+                android:label="@string/app_name">
+            <intent-filter>
+                <category android:name="android.intent.category.EMBED">
+                </category>
+
+                <action android:name="android.intent.action.MAIN">
+                </action>
+            </intent-filter>
+
+            <!-- OAuth 2.0 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="7test-android-app"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.TestsTab"
+                android:label="@string/app_name">
+            <intent-filter>
+                <category android:name="android.intent.category.EMBED">
+                </category>
+
+                <action android:name="android.intent.action.MAIN">
+                </action>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.AutomationTestsTab"
+                android:label="@string/app_name">
+            <intent-filter>
+                <category android:name="android.intent.category.EMBED">
+                </category>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN">
+                </action>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.SdTestsActivity"
+                android:label="@string/activity_manage_tests">
+            <intent-filter>
+                <action android:name="com.seven.asimov.test.tool.ACTION_MANAGE_TESTS"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.TestInfoActivity"
+                android:label="@string/activity_test_info">
+            <intent-filter>
+                <action android:name="com.seven.asimov.test.tool.ACTION_TEST_INFO"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.ViewActivity"/>
+        <activity android:name=".activity.OCConfig"/>
+        <activity android:name=".activity.InformationActivity"/>
+
+        <service android:name=".services.MainService"/>
+        <service android:name=".services.TestsService"/>
+
+        <receiver android:name=".receivers.BootCompleteReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.AlarmReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="com.seven.asimov.test.tool.intent.action.ALARM"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.PackageReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.ConnectivityReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
+                <action android:name="com.seven.asimov.test.tool.intent.action.GET_NETWORK_INFO"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.SdMountReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.MEDIA_SCANNER_STARTED"/>
+                <action android:name="android.intent.action.MEDIA_SCANNER_FINISHED"/>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
+
+                <data android:scheme="file"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+    <uses-sdk
+            android:minSdkVersion="10"/>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+
+
+</manifest>

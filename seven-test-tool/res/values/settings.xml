@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="default_collector_host">rel11600.seven.com</string>
+	<string name="default_collector_port">80</string>
+	<string name="default_collector_path">filecollector</string>
+	<string name="default_netlog_local_path">/data/data/com.seven.asimov/files/</string>
+	<bool name="default_netlog_automatic_upload">true</bool>
+
+	<string name="key_collector_host">collector_host</string>
+	<string name="key_collector_port">collector_port</string>
+	<string name="key_collector_path">collector_path</string>
+	<string name="key_netlog_automatic_upload">netlog_automatic_upload</string>
+	<string name="key_netlog_local_path">netlog_local_path</string>
+
+	<string name="prefs_name">global</string>
+</resources>

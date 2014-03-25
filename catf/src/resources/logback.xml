@@ -1,0 +1,30 @@
+<configuration>
+    <!-- Create a log appender -->
+    <appender name="customLog" class="ch.qos.logback.core.FileAppender">
+        <file>${logbackFilePath}/${logFileName}</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logLevel}</level>
+        </filter>
+
+    </appender>
+
+
+    <!-- Create a logcat appender -->
+    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logcatLevel}</level>
+        </filter>
+    </appender>
+
+    <root level="ALL">
+        <appender-ref ref="logcat" />
+        <appender-ref ref="customLog" />
+    </root>
+
+</configuration>

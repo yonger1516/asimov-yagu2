@@ -1,0 +1,10 @@
+package com.seven.asimov.it.utils.logcat.wrappers;
+
+public class PackDumpSuccessWrapper extends LogEntryWrapper{
+    private static final String TAG = PackDumpSuccessWrapper.class.getSimpleName();
+
+    @Override
+    protected String getTAG() {
+        return TAG;
+    }
+}

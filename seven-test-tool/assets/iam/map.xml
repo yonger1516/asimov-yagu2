@@ -1,0 +1,204 @@
+<key id="0" name="root" type="NULL">
+	
+	<key id="0" name="upgrade.response.error.key" type="Z7_ERROR" contentId="7"/>
+	<key id="1" name="upgrade.request.endpoint.binary.version.key" type="INT_ARRAY_MAP" contentId="7">
+		<key id="0" name="client.upgrade.version.major.key" type="INTEGER" />
+		<key id="1" name="client.upgrade.version.build.major.key" type="INTEGER" />
+		<key id="2" name="client.upgrade.version.build.minor.key" type="INTEGER" />
+		<key id="3" name="client.upgrade.version.branch.identifier.key" type="INTEGER" />	
+	</key>
+	<key id="2" name="upgrade.request.endpoint.brand.version.key" type="INT_ARRAY_MAP" contentId="7">
+		<key id="0" name="client.upgrade.version.major.key" type="INTEGER" />
+		<key id="1" name="client.upgrade.version.build.major.key" type="INTEGER" />
+		<key id="2" name="client.upgrade.version.build.minor.key" type="INTEGER" />
+		<key id="3" name="client.upgrade.version.branch.identifier.key" type="INTEGER" />	
+	</key>
+	<key id="3" name="upgrade.request.endpoint.platform.uid.key" type="STRING" contentId="7" />
+	<key id="4" name="upgrade.request.endpoint.provisioning.id.key" type="STRING" contentId="7" />
+	<key id="5" name="upgrade.request.endpoint.locale.key" type="STRING" contentId="7" />
+	<key id="6" name="upgrade.request.silent.key" type="BOOLEAN" contentId="7" />
+	
+	<key id="1" name="provision.error" type="Z7_ERROR" />
+	<key id="2" name="provision.challenge" type="BYTE_ARRAY" />
+	<key id="3" name="provision.challengeresponse" type="BYTE_ARRAY" />
+	<key id="6" name="provision.publickey" type="BYTE_ARRAY" />
+	<key id="7" name="provision.ephemeral.publickey" type="BYTE_ARRAY" />
+	<key id="10" name="provision.scope" type="SHORT" />
+	<key id="11" name="provision.name" type="STRING" />
+	<key id="12" name="provision.email" type="STRING" />
+	<key id="15" name="provision.password" type="STRING" />
+	<key id="16" name="provision.noc_id" type="INTEGER" />
+	<key id="17" name="provision.host_id" type="INTEGER" />
+	<key id="19" name="provision.profile" type="INT_ARRAY_MAP">
+		<key id="1" name="profile.type" type="SHORT" />
+		<key id="2" name="profile.description" type="STRING" />
+		<key id="3" name="profile.version" type="STRING" />
+		<key id="4" name="profile.preferredrelay" type="STRING" />
+		<key id="5" name="profile.provisioningid" type="STRING" />
+		<key id="6" name="profile.os" type="STRING" />
+		<key id="7" name="profile.osversion" type="STRING" />
+		<key id="8" name="profile.endpoint.group.name" type="STRING" />
+		<key id="100" name="profile.relayid" type="INTEGER" />
+		<key id="101" name="profile.relayaddress" type="STRING" />
+		<key id="102" name="profile.vendor" type="STRING" />
+		<key id="103" name="profile.model" type="STRING" />
+		<key id="104" name="profile.imei" type="STRING" />
+		<key id="105" name="profile.msisdn" type="STRING" />
+		<key id="106" name="profile.locale" type="STRING" />
+		<key id="107" name="profile.ip" type="STRING" />
+		<key id="108" name="profile.triggerport" type="INTEGER" />
+		<key id="109" name="profile.triggerdelivery.type" type="INTEGER" />
+		<key id="110" name="profile.identity.string" type="STRING" />
+		<key id="111" name="profile.trigger.prefix" type="STRING" />
+		<key id="112" name="profile.imsi" type="STRING" />
+		<key id="113" name="profile.host.id" type="LONG" />
+		<key id="114" name="profile.dormancy.timeout" type="INTEGER" />
+		<key id="115" name="profile.current.timezone.id" type="STRING" />
+		<key id="116" name="profile.current.timezone" type="INTEGER" />
+		<key id="150" name="profile.disableisps" type="BOOLEAN" />
+		<!-- key id="151" name="profile.security.code.length" type="STRING" /-->
+		<key id="152" name="profile.brandid" type="STRING" />
+		<key id="153" name="profile.security.code.random.byte" type="BYTE" />
+		<key id="200" name="profile.supportedcodecs" type="LIST" valueSubType="SHORT" />
+		<key id="201" name="profile.supportsreassembly" type="BOOLEAN" />
+	</key>
+	<key id="20" name="provision.username" type="STRING" />
+	<key id="22" name="provision.enterprise" type="STRING" />
+	<key id="24" name="provision.url" type="STRING" />
+	<key id="26" name="provision.msisdn" type="STRING" />
+	<key id="27" name="provision.staged.accounts" type="LIST" valueSubType="INT_ARRAY_MAP" />
+	<key id="28" name="provision.stagedid" type="LONG" />
+	<key id="30" name="provision.instanceid" type="SHORT" />
+	<key id="34" name="provision.isp.server.id" type="INTEGER" />
+	<key id="35" name="provision.information" type="LIST" />
+	<key id="36" name="provision.connectors" type="LIST" valueSubType="INT_ARRAY_MAP" />
+	<key id="37" name="provision.connector" type="INT_ARRAY_MAP" />
+	<key id="38" name="provision.connector_id" type="STRING" />
+	<key id="39" name="provision.page" type="INTEGER" />
+	<key id="40" name="provision.icon.id" type="STRING" />
+	<key id="41" name="provision.icon.last.modified" type="DATE" />
+	<key id="42" name="provision.resources" type="LIST" valueSubType="INT_ARRAY_MAP" />
+	<key id="43" name="provision.resource.id" type="STRING" />
+	<key id="44" name="provision.resource.last.modified" type="DATE" />
+	<key id="46" name="provision.isp_servers" type="LIST" valueSubType="INT_ARRAY_MAP" />
+	<key id="49" name="provision.isp_brand_id" type="STRING" />
+	<key id="50" name="provision.isp.type" type="INTEGER" />
+	<key id="51" name="provision.silent.relogin" type="BOOLEAN" />
+	<key id="52" name="provision.isp.selection.value" type="STRING" />
+	<key id="53" name="provision.available.services" type="LIST" valueSubType="SHORT"/>
+	<key id="54" name="provision.account.id" type="INTEGER" />
+	<key id="57" name="provision.isp.cert.required" type="BOOLEAN" />
+	<key id="58" name="provision.isp.id" type="LONG" />
+	<key id="59" name="provision.self.signed.cert" type="BOOLEAN" />
+	<key id="60" name="provision.staged.service.info" type="STRING" />
+	<key id="62" name="provision.blacklist.entries" type="LIST" />
+	<key id="63" name="provision.subconnectors" type="LIST" valueSubType="INT_ARRAY_MAP" />
+	<key id="64" name="provision.url.tou" type="STRING" />
+	<key id="65" name="provision.url.privacy" type="STRING" />
+	<key id="66" name="provision.exclusive.account" type="BOOLEAN" />
+	<key id="67" name="provision.content.params" type="INT_ARRAY_MAP" />
+	<key id="68" name="provision.isp.email.needed" type="BOOLEAN" />
+	<key id="69" name="provision.isp.email.domain" type="STRING" />
+	<key id="70" name="provision.password.set" type="STRING" />
+	<key id="72" name="provision.token" type="BYTE_ARRAY" />
+	<key id="73" name="provision.sequence.id" type="INTEGER" />
+	<key id="74" name="provision.account.nickname" type="STRING" />
+	<key id="76" name="provision.data.recovery.sync.content.id" type="SHORT" />
+	<key id="78" name="provision.previously.enabled.services" type="LIST" valueSubType="SHORT" />
+	<key id="79" name="provision.nack.code" type="SHORT" />
+	<key id="80" name="provision.nack.detail" type="INTEGER" />
+	<key id="82" name="provision.imap.self.signed.cert.implemented" type="BOOLEAN" />
+	<key id="81" name="provision.support.other" type="BOOLEAN" />
+	<key id="87" name="provision.requested.scopes" type="LIST"  valueSubType="INTEGER" />
+	<key id="88" name="provision.custom.data" type="STRING" />
+	<key id="89" name="provision.password.store.locally" type="BOOLEAN" />
+	<key id="90" name="provision.server.time.utc" type="DATE" />
+	<key id="91" name="provision.ping.device.type" type="STRING" />
+	<key id="96" name="provision.version" type="STRING" />
+	<key id="97" name="provision.supported.services" type="LIST" valueSubType="SHORT" />
+	<key id="99" name="provision.reset.connection" type="BOOLEAN" />
+	<key id="100" name="provision.resource.content.type" type="STRING" />
+	<key id="101" name="provision.group.id" type="STRING" />
+	<key id="102" name="provision.group.displayname" type="STRING" />
+	<key id="103" name="provision.group.defaultdomain" type="LIST" />
+	<key id="104" name="provision.is.eas.account" type="BOOLEAN" />
+	<key id="105" name="provision.invisible.login" type="BOOLEAN" />
+	
+	<!-- key id="1053698" name="config.emailacct" type="BOOLEAN" /-->
+	<key id="1053699" name="config.emailacct" type="STRING" />
+	
+	<key id="1076325" name="th.poll.request.url" type="STRING" />
+	<key id="1076326" name="th.poll.request.header.list" type="STRING" />
+	<key id="1076327" name="th.poll.request.id" type="SHORT" />
+	<key id="1076328" name="th.poll.response.id" type="SHORT" />
+	<key id="1076329" name="th.client.id.list" type="ARRAY_MAP" keySubType="LONG" valueSubType="BYTE" />
+	<key id="1076330" name="th.poll.request.time.to.live.in.seconds" type="LONG" />
+	<key id="1076331" name="th.poll.request.interval.in.seconds" type="LIST" valueSubType="LONG"/>
+	<key id="1076332" name="th.poll.request.body" type="BYTE_ARRAY" />
+	<key id="1076333" name="th.heartbeat.timestamp" type="DATE" />
+	<key id="1076334" name="th.response.error" type="Z7_ERROR" />
+	<key id="1076335" name="th.poll.request.cache.content" type="BOOLEAN" />
+	<key id="1076336" name="th.response.cached.data" type="BYTE_ARRAY" />
+	<key id="1076337" name="th.poll.request.read.timeout" type="LONG" />
+	<key id="1076338" name="th.response.data.hash" type="STRING" />
+	<key id="1076339" name="th.poll.long.delay.in.seconds" type="LONG" />
+	<key id="1076340" name="th.poll.task.id" type="STRING" />
+	<key id="1076341" name="th.response.data.caching.supported" type="BOOLEAN" />
+	<key id="1076342" name="th.poll.request.max.notification.delay.in.seconds" type="LONG" />
+	<key id="1076343" name="th.set.clumping.request.enabled" type="BOOLEAN" />
+	<key id="1076344" name="th.set.clumping.response.enabled" type="BOOLEAN" />
+	<key id="1076345" name="th.poll.request.temporary.poll" type="BOOLEAN" />
+	<key id="1076346" name="th.poll.response.temporary.poll" type="BOOLEAN" />
+	<key id="1076347" name="th.poll.request.exception.handling.param" type="INTEGER" />
+	<key id="1076348" name="th.content.handlers" type="LIST" valueSubType="INT_ARRAY_MAP"/>
+	<key id="1076349" name="th.content.handler.name" type="STRING" />
+	<key id="1076350" name="th.content.handler.property.client.secret" type="STRING" />
+	<key id="1076351" name="th.content.handler.property.token.secret" type="STRING" />
+	<key id="1076352" name="th.content.handler.property.pattern" type="STRING" />
+	<key id="1076353" name="th.content.handler.property.encoding" type="STRING" />
+	<key id="1076356" name="th.device.certificate" type="BYTE_ARRAY" />
+	<key id="1076357" name="th.device.private.key" type="BYTE_ARRAY" />
+	<key id="1076358" name="th.device.certificate.revoked" type="BYTE_ARRAY" />
+	<key id="1076359" name="th.device.private.key.revoked" type="BYTE_ARRAY" />
+	<key id="1076360" name="th.content.handler.property.patterns" type="LIST" valueSubType="STRING"/>
+	<key id="1076361" name="th.content.handler.property.secret.id" type="STRING" />
+	<key id="1076362" name="th.poll.request.protocol" type="STRING" />
+	<key id="1076363" name="th.oauth2.token.refresh.secret.id" type="STRING" />
+	<key id="1076364" name="th.oauth2.token.refresh.access.token.hash" type="STRING" />
+	<key id="1076365" name="th.oauth2.token.refresh.request.data" type="INT_ARRAY_MAP" />
+	<key id="1076366" name="th.oauth2.token.refresh.response.data" type="BYTE_ARRAY" />
+	<key id="1076367" name="th.oauth2.token.store.request.data" type="INT_ARRAY_MAP" />
+	<key id="1076368" name="th.secure.storage.property.access.token" type="STRING" />
+	<key id="1076369" name="th.content.handler.response" type="ARRAY_MAP" keySubType="STRING" valueSubType="INT_ARRAY_MAP" />
+	<key id="1076370" name="th.secure.storage.operation" type="INT_ARRAY_MAP" />
+	<key id="1076371" name="th.cached.data.offset" type="LONG" />
+	<key id="1076372" name="th.cached.data.max.chunk.size" type="LONG" />
+	<key id="1076373" name="th.cached.content.size.list" type="ARRAY_MAP" keySubType="LONG" valueSubType="LONG" />
+	<key id="1076374" name="th.poll.request.line" type="STRING" />
+	<key id="1076375" name="th.poll.request.subscription.ttl" type="STRING" />
+	<key id="1076376" name="th.content.handler.property.cookie.rules" type="LIST" valueSubType="STRING"/>
+	<key id="1076377" name="th.device.current.date" type="DATE" />
+	<key id="1076378" name="th.poll.request.idle.time.in.seconds" type="LONG" />
+	<key id="1076379" name="th.poll.request.polling.class" type="BYTE" />
+	<key id="1076380" name="th.site.certificate.domains" type="LIST" valueSubType="STRING"/>
+	<key id="1076381" name="th.site.certificates" type="STRING" />
+	<key id="1076382" name="th.site.private.keys" type="STRING" />
+	<key id="1076383" name="th.ca.certificate" type="BYTE_ARRAY" />
+	<key id="1082369" name="pm.error" type="Z7_ERROR" />
+	<key id="1082370" name="pm.profile" type="INT_ARRAY_MAP" />
+	<key id="1082371" name="pm.importance" type="INTEGER" />
+	<key id="1082372" name="pm.policy.list" type="LIST" valueSubType="INT_ARRAY_MAP" />
+	<key id="1082373" name="pm.policy.name" type="STRING" />
+	<key id="1082374" name="pm.policy.type" type="INTEGER" />
+	<key id="1082375" name="pm.policy.value" type="STRING" />
+	<key id="1082376" name="pm.policy.version" type="STRING" />
+	<key id="1082377" name="pm.policy.exp.date" type="DATE" />
+	<key id="1082378" name="pm.policy.key" type="STRING" />
+	<key id="1082379" name="pm.cache.invalidate" type="INTEGER" />
+	<key id="1082380" name="pm.profile.name" type="STRING" />
+	<key id="1082381" name="pm.profile.apps" type="LIST" />
+	<key id="1082382" name="pm.endpoint.id" type="STRING" />
+	<key id="1082383" name="pm.scope.type" type="STRING" />
+	<key id="1080321" name="crcs.response.last.block" type="INTEGER" />
+	<key id="1080322" name="crcs.response.last.record" type="INTEGER" />
+</key>

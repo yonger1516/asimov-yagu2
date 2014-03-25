@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!--c004-->
+    <comment>branding name</comment>
+    <entry key="brandingName">c004_default</entry>
+    <entry key="relayHost">carrier004.toc.seven.com</entry>
+    <entry key="relayPort">7735</entry>
+    <entry key="redirHost">carrier004.toc.seven.com</entry>
+    <entry key="redirPort">0</entry>
+</properties>

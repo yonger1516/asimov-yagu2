@@ -1,0 +1,1 @@
+package com.seven.asimov.it.tests.crcs.radiolog.lte.fixed;

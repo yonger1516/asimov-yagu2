@@ -1,0 +1,104 @@
+package com.seven.asimov.test.tool.core.testjobs;
+
+import com.seven.asimov.test.tool.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+/**
+ * TestJobType.
+ *
+ * @author Maksim Selivanov (mselivanov@seven.com)
+ */
+
+public enum TestJobType {
+
+    EOF(-1),
+
+    AUTOMATED_TEST(R.id.btnAutomatedTest),
+    UNSCHEDULE_AUTOMATED_TEST(4),
+
+    BUTTON_SINGLE_REQUEST(R.id.btnRequest),
+    BUTTON_PERIODIC_REQUESTS(R.id.btnRequestWithInterval),
+    BUTTON_LOOPED_REQUESTS(R.id.btnLoopedRequest),
+
+    UNSCHEDULE_BUTTON_SINGLE_REQUEST(1),
+    UNSCHEDULE_BUTTON_PERIODIC_REQUESTS(2),
+    UNSCHEDULE_BUTTON_LOOPED_REQUESTS(3),
+
+    BUTTON_PREVIOUS_REQUEST(R.id.buttonPrevoiusRequest),
+    BUTTON_NEXT_REQUEST(R.id.buttonNextRequest),
+    BUTTON_RESET_REQUEST(R.id.buttonResetRequest),
+    BUTTON_SHOW_REQUEST(R.id.buttonShowRequest),
+
+    BUTTON_PREVIOUS_PATTERN(R.id.buttonPrevoiusPattern),
+    BUTTON_NEXT_PATTERN(R.id.buttonNextPattern),
+    BUTTON_RESET_PATTERN(R.id.buttonResetPattern),
+
+    SERVICE_REQUEST_LOADTEST(200),
+    SERVICE_REQUEST_LOADTESTS(201),
+    SERVICE_REQUEST_LOADSCOPES(202),
+
+    SERVICE_PROXY_REQUEST_CHANGERELAY(300),
+    SERVICE_PROXY_REQUEST_CHANGEPROXY(301),
+    SERVICE_PROXY_REQUEST_INVALIDATEALL(302),
+
+    SERVICE_TESTS_LOAD_AUTOMATED_TESTS(400);
+
+    private Integer mValue;
+
+    public void setValue(Integer value) {
+        this.mValue = value;
+    }
+
+    public Integer getValue() {
+        return mValue;
+    }
+
+    TestJobType(Integer value) {
+        this.mValue = value;
+    }
+
+    private static final Map<Integer, TestJobType> TEST_JOB_TYPES;
+
+    static {
+        TEST_JOB_TYPES = new HashMap<Integer, TestJobType>();
+
+        TEST_JOB_TYPES.put(EOF.getValue(), EOF);
+
+        TEST_JOB_TYPES.put(AUTOMATED_TEST.getValue(), AUTOMATED_TEST);
+        TEST_JOB_TYPES.put(UNSCHEDULE_AUTOMATED_TEST.getValue(), UNSCHEDULE_AUTOMATED_TEST);
+
+        TEST_JOB_TYPES.put(BUTTON_SINGLE_REQUEST.getValue(), BUTTON_SINGLE_REQUEST);
+        TEST_JOB_TYPES.put(BUTTON_PERIODIC_REQUESTS.getValue(), BUTTON_PERIODIC_REQUESTS);
+        TEST_JOB_TYPES.put(BUTTON_LOOPED_REQUESTS.getValue(), BUTTON_LOOPED_REQUESTS);
+
+        TEST_JOB_TYPES.put(UNSCHEDULE_BUTTON_SINGLE_REQUEST.getValue(), UNSCHEDULE_BUTTON_SINGLE_REQUEST);
+        TEST_JOB_TYPES.put(UNSCHEDULE_BUTTON_PERIODIC_REQUESTS.getValue(), UNSCHEDULE_BUTTON_PERIODIC_REQUESTS);
+        TEST_JOB_TYPES.put(UNSCHEDULE_BUTTON_LOOPED_REQUESTS.getValue(), UNSCHEDULE_BUTTON_LOOPED_REQUESTS);
+
+        TEST_JOB_TYPES.put(BUTTON_PREVIOUS_REQUEST.getValue(), BUTTON_PREVIOUS_REQUEST);
+        TEST_JOB_TYPES.put(BUTTON_NEXT_REQUEST.getValue(), BUTTON_NEXT_REQUEST);
+        TEST_JOB_TYPES.put(BUTTON_RESET_REQUEST.getValue(), BUTTON_RESET_REQUEST);
+        TEST_JOB_TYPES.put(BUTTON_SHOW_REQUEST.getValue(), BUTTON_SHOW_REQUEST);
+
+        TEST_JOB_TYPES.put(BUTTON_PREVIOUS_PATTERN.getValue(), BUTTON_PREVIOUS_PATTERN);
+        TEST_JOB_TYPES.put(BUTTON_NEXT_PATTERN.getValue(), BUTTON_NEXT_PATTERN);
+        TEST_JOB_TYPES.put(BUTTON_RESET_PATTERN.getValue(), BUTTON_RESET_PATTERN);
+
+        TEST_JOB_TYPES.put(SERVICE_REQUEST_LOADTEST.getValue(), SERVICE_REQUEST_LOADTEST);
+        TEST_JOB_TYPES.put(SERVICE_REQUEST_LOADTESTS.getValue(), SERVICE_REQUEST_LOADTESTS);
+        TEST_JOB_TYPES.put(SERVICE_REQUEST_LOADSCOPES.getValue(), SERVICE_REQUEST_LOADSCOPES);
+
+        TEST_JOB_TYPES.put(SERVICE_PROXY_REQUEST_CHANGERELAY.getValue(), SERVICE_PROXY_REQUEST_CHANGERELAY);
+        TEST_JOB_TYPES.put(SERVICE_PROXY_REQUEST_CHANGEPROXY.getValue(), SERVICE_PROXY_REQUEST_CHANGEPROXY);
+        TEST_JOB_TYPES.put(SERVICE_PROXY_REQUEST_INVALIDATEALL.getValue(), SERVICE_PROXY_REQUEST_INVALIDATEALL);
+
+        TEST_JOB_TYPES.put(SERVICE_TESTS_LOAD_AUTOMATED_TESTS.getValue(), SERVICE_TESTS_LOAD_AUTOMATED_TESTS);
+    }
+
+    public static TestJobType get(Integer value) {
+        return TEST_JOB_TYPES.get(value);
+    }
+}

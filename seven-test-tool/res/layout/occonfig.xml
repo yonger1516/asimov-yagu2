@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ocConfName" android:layout_gravity="center" android:textSize="18dp"
+            android:textIsSelectable="false" android:textStyle="bold" android:text="@string/ocConfig"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_margin="5dp">
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brandingName"
+                    android:id="@+id/tBrandingName" android:textSize="16dp"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="eng002_default"
+                    android:id="@+id/eBrandingName" android:textSize="16dp" android:inputType="text"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_gravity="center"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/relayHost"
+                    android:id="@+id/tRelayHost" android:layout_gravity="center_horizontal|top" android:textSize="16dp"
+                    android:textIsSelectable="false"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="eng002.seven.com"
+                    android:id="@+id/eRelayHost" android:layout_gravity="center_horizontal|top" android:textSize="16dp"
+                    android:inputType="text"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_gravity="center"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/relayPort"
+                    android:id="@+id/tRelayPort" android:layout_gravity="center_horizontal|top" android:layout_margin="3dp"
+                    android:textSize="16dp"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="7735"
+                    android:id="@+id/eRelayPort" android:layout_gravity="center_horizontal|top"
+                    android:singleLine="false" android:textSize="16dp" android:inputType="number"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_gravity="center"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/redirect1Host"
+                    android:id="@+id/tRedirHost" android:layout_gravity="center_horizontal|top" android:textSize="16dp"
+                    android:singleLine="false"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="eng002.seven.com"
+                    android:id="@+id/eRedirHost" android:layout_gravity="center_horizontal|top" android:textSize="16dp"
+                    android:inputType="text"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_gravity="center"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/redirect1Port"
+                    android:id="@+id/tRedirPort" android:layout_gravity="center_horizontal|top" android:textSize="16dp"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/eRedirPort" android:layout_gravity="center_horizontal|top" android:textSize="18dp"
+                    android:inputType="number"/>
+        </TableRow>
+    </LinearLayout>
+</LinearLayout>

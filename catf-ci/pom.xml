@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--<parent>-->
+        <!--<groupId>com.seven.asimov</groupId>-->
+        <!--<artifactId>asimov-client-parent</artifactId>-->
+        <!--<version>3.0-SNAPSHOT</version>-->
+    <!--</parent>-->
+
+    <groupId>com.seven.asimov</groupId>
+    <artifactId>asimov-client-ci</artifactId>
+    <packaging>pom</packaging>
+    <name>Asimov Android Client</name>
+    <version>3.0-SNAPSHOT</version>
+
+    <ciManagement>
+        <system>Hudson</system>
+        <url>http://rwc-bldu3:8080/job/asimov-client-ci_asimov/</url>
+    </ciManagement>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <modules>
+                <module>../asimov</module>
+                <module>../asimov-client-test</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ci-test</id>
+            <modules>
+                <module>../client-compat</module>
+                <module>../util-core</module>
+                <module>../asimov-core</module>
+                <module>../asimov-ssl</module>
+                <module>../asimov-jsse</module>
+                <module>../asimov</module>
+                <module>../asimov-client-test</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ci-it</id>
+            <modules>
+                <module>../client-compat</module>
+                <module>../util-core</module>
+                <module>../asimov-core</module>
+                <module>../asimov-ssl</module>
+                <module>../asimov-jsse</module>
+                <module>../asimov-client-installer</module>
+                <module>../asimov</module>
+                <module>../catf</module>
+                <module>../catf-it</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ci-it-ga</id>
+            <modules>
+                <module>../asimov</module>
+                <module>../catf</module>
+                <module>../asimov-client-it</module>
+                <module>../asimov-client-installer</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ci-it-ga2</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>../catf-parent</module>
+                <module>../catf</module>
+                <module>../catf-it</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ci-sonar</id>
+            <properties>
+                <sonar.core.codeCoveragePlugin>emma</sonar.core.codeCoveragePlugin>
+                <sonar.skippedModules>asimov-ssl,asimov-client-test</sonar.skippedModules>
+                <sonar.exclusions>src/test/java/**</sonar.exclusions>
+            </properties>
+            <modules>
+                <module>../client-compat</module>
+                <module>../util-core</module>
+                <module>../asimov-core</module>
+                <module>../asimov-ssl</module>
+                <module>../asimov-jsse</module>
+                <module>../asimov</module>
+                <module>../asimov-client-test</module>
+            </modules>
+        </profile>
+    </profiles>
+
+</project>

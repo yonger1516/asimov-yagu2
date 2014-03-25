@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OC Client Test Framework</string>
+    <string name="branding">${branding}</string>
+    <string name="branding_property">${branding_property}</string>
+</resources>

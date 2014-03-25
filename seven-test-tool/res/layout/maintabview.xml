@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scroller"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fadeScrollbars="true"
+            android:fillViewport="true">
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/lblvarConnectionType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+
+            <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                <TextView
+                        android:id="@+id/lblvarTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="10dip"
+                        android:textColor="@color/green"
+                        android:textStyle="bold"/>
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dip"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/lblconstTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="Test suite:"
+                    android:textColor="@color/white"/>
+
+            <TextView
+                    android:id="@+id/lblvarTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textSize="20dip"
+                    android:textStyle="bold"/>
+
+            <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                <TextView
+                        android:id="@+id/lblvarprevTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="10dip"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"/>
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/lblconstMethod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="Method:"
+                    android:textColor="@color/white"/>
+
+            <com.seven.asimov.test.tool.controls.NewEditText
+                    android:id="@+id/txtMethod"
+                    android:layout_width="100dip"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="text|textNoSuggestions"/>
+
+            <Button
+                    android:id="@+id/buttonShowRequest"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginTop="-4dip"
+                    android:text="@string/ButtonShowRequest"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-13dip"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/lblUri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="@string/lblUri"
+                    android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <com.seven.asimov.test.tool.controls.NewEditText
+                    android:id="@+id/txtUri"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri|textMultiLine|textNoSuggestions"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="@string/lblLoadedRequests"
+                    android:textColor="@color/white"/>
+
+            <TextView
+                    android:id="@+id/lblvarCurrentRequestId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="/"
+                    android:textColor="@color/white"/>
+
+            <TextView
+                    android:id="@+id/lblvarLoadedRequestsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="@string/textViewTestReterations"
+                    android:textColor="@color/white"/>
+
+            <TextView
+                    android:id="@+id/textViewCurrentTestReterationId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="/"
+                    android:textColor="@color/white"/>
+
+            <TextView
+                    android:id="@+id/textViewCurrentTestReterations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:id="@+id/buttonPrevoiusRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/buttonPreviousRequest"/>
+
+            <Button
+                    android:id="@+id/buttonNextRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/ButtonNextRequest"/>
+
+            <Button
+                    android:id="@+id/buttonResetRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/ButtonReset"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/layoutRequest"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/btnRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btnRequest"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/layoutRequestWithInterval"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/btnRequestWithInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btnRequestWithInterval"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/layoutLoopedRequest"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/btnLoopedRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btnLoopedRequest"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/lblInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="@string/lblInterval"
+                    android:textColor="@color/white"/>
+
+            <TextView
+                    android:id="@+id/textViewCurrentPatternId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:visibility="visible"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="/"
+                    android:textColor="@color/white"
+                    android:visibility="visible"/>
+
+            <TextView
+                    android:id="@+id/textViewPatternSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:visibility="visible"/>
+
+            <TextView
+                    android:id="@+id/textViewDelay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:text="@string/textViewDelay"
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
+
+            <TextView
+                    android:id="@+id/textViewCurrentDelay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <com.seven.asimov.test.tool.controls.NewEditText
+                    android:id="@+id/txtIntervalPattern"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="2dip"
+                    android:gravity="center"
+                    android:inputType="numberDecimal|textNoSuggestions"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/buttonPrevoiusPattern"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="@string/ButtonPreviousPattern"/>
+
+            <Button
+                    android:id="@+id/buttonNextPattern"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/ButtonNextPattern"/>
+
+            <Button
+                    android:id="@+id/buttonResetPattern"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/ButtonReset"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/layoutAutomatedTest"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/btnAutomatedTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btnAutomatedTest"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
