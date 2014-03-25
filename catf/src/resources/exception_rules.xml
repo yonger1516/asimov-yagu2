@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <exceptions>
-    <exception>
+    <!--<exception>
         <sourceClass>com.seven.asimov.it.complex.functional.Tests</sourceClass>
         <sourceMethod>test_002</sourceMethod>
         <throwableClass>java.lang.IllegalArgumentException</throwableClass>
@@ -33,5 +33,5 @@
         <sourceMethod>test_002</sourceMethod>
         <throwableClass>java.lang.IllegalStateException</throwableClass>
         <logMessage>IllegalStateExceptionin test_002</logMessage>
-    </exception>
+    </exception> -->
 </exceptions>
