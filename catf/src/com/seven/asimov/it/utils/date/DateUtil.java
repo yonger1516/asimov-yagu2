@@ -9,6 +9,7 @@ import com.seven.asimov.it.base.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -37,11 +38,16 @@ public final class DateUtil {
     private static TimeZone currentTimeZone = INITIAL_DEVICE_TIME_ZONE;
     private static final String resource = "asimov_time_sync";
 
-    public static void setTimeZoneOnDevice(Context context, TimeZone tz) {
+    public static void setTimeZoneOnDevice(Context context, TimeZone tz) throws IOException {
         AlarmManager alManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         logger.info(String.format("Setting time zone: %s", tz));
         alManager.setTimeZone(tz.getID());
         currentTimeZone = tz;
+
+        if (!tz.equals(TimeZone.getDefault())){
+             logger.error("Set time zone failed.");
+             throw new IOException("Set time zone failed.");
+        }
     }
 
     public static void syncTimeWithTestRunner() {

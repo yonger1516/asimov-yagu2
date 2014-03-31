@@ -166,12 +166,14 @@ public abstract class Task<T extends LogEntryWrapper> {
     protected void setTimestampToWrapper(T wrapper, Matcher matcher, int timeIndex, int timeZoneIndex) {
         int hour = 0;
         if (changeTimestampToGMT) {
-            TimeZone.setDefault(TimeZone.getTimeZone("GTM"));
-//            logger.trace("Set timezone to GMT");
+            TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+            //            logger.trace("Set timezone to GMT");
             try {
                 hour = TimeZones.valueOf(matcher.group(timeZoneIndex)).getId();
             } catch (IllegalArgumentException e) {
+                logger.error("Time zone from client:"+timeZoneIndex+" convert failed.Using default timezone GMT.");
                 logger.error(ExceptionUtils.getStackTrace(e));
+
             }
         }
         long timestamp = DateUtil.format(matcher.group(timeIndex).replaceAll("/", "-")) + hour * 3600 * 1000;

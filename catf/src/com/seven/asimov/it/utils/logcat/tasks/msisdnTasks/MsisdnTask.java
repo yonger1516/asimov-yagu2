@@ -43,22 +43,27 @@ public class MsisdnTask extends Task<MsisdnWrapper> {
         Matcher matcher4 = msisdnValuePattern.matcher(line);
 
         if (matcher1.find()) {
-            getWrapper().setTimestamp(getTimestamp(matcher1.group(1), matcher1.group(2)));
+
+            setTimestampToWrapper(getWrapper(),matcher1,1,2);
+            //getWrapper().setTimestamp(getTimestamp(matcher1.group(1), matcher1.group(2)));
             getWrapper().setMsisdnSuccess(true);
             return wrapper;
         }
         if (matcher2.find()) {
-            getWrapper().setTimestamp(getTimestamp(matcher2.group(1), matcher2.group(2)));
+            setTimestampToWrapper(getWrapper(),matcher1,1,2);
+            //getWrapper().setTimestamp(getTimestamp(matcher2.group(1), matcher2.group(2)));
             getWrapper().setImsi(Long.parseLong(matcher2.group(3)));
             return wrapper;
         }
         if (matcher3.find()) {
-            getWrapper().setTimestamp(getTimestamp(matcher3.group(1), matcher3.group(2)));
+            setTimestampToWrapper(getWrapper(),matcher1,1,2);
+            //getWrapper().setTimestamp(getTimestamp(matcher3.group(1), matcher3.group(2)));
             getWrapper().setValidationNeeded(true);
             return wrapper;
         }
         if (matcher4.find()) {
-            getWrapper().setTimestamp(getTimestamp(matcher4.group(1), matcher4.group(2)));
+            setTimestampToWrapper(getWrapper(),matcher1,1,2);
+            //getWrapper().setTimestamp(getTimestamp(matcher4.group(1), matcher4.group(2)));
             getWrapper().setMsisdn(matcher4.group(3));
         }
         return null;
