@@ -546,10 +546,8 @@ public class PMSUtil {
     private static HttpResponse sendGetHttpRequestToPms(String path) {
         HttpResponse response = null;
 
-
+        int i = 0;
         while (true) {
-
-            int i = 0;
             try {
                 HttpRequest request = HttpRequest.Builder.create().getRequest();
                 request.addHeaderField(mAuthorizedHeader);

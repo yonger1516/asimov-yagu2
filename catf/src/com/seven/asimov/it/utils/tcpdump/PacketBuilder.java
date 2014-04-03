@@ -102,9 +102,10 @@ class PacketBuilder {
         } catch (Exception iae) {
             ExceptionUtils.getStackTrace(iae);
             logger.error("Error when processing bytes: ");
-            for (int i = 0; i < dataBytes.length; i++) {
+           /* for (int i = 0; i < dataBytes.length; i++) {
                 logger.error(i + " : " + dataBytes[i]);
-            }
+            }*/
+            logger.error(new String(dataBytes));
             return null;
         }
         return packet;
