@@ -237,7 +237,7 @@ public class PMSUtil {
             String respBode = sendHttpRequestToPms(REST_BATCH, str).getBody();
             id = respBode.substring(respBode.indexOf("objectId") + 10, respBode.indexOf("objectName") - 2);
             logger.info("created property: " + id);
-                pushToClient();
+            pushToClient();
         } catch (Exception e) {
             logger.error(ExceptionUtils.getStackTrace(e));
         }
@@ -545,15 +545,31 @@ public class PMSUtil {
 
     private static HttpResponse sendGetHttpRequestToPms(String path) {
         HttpResponse response = null;
-        try {
-            HttpRequest request = HttpRequest.Builder.create().getRequest();
-            request.addHeaderField(mAuthorizedHeader);
-            request.setUri(String.format(URI_TEMPLATE, mPmsServerIp, mPmsServerPort, path));
-            request.setMethod("GET");
-            request.addHeaderField(new HttpHeaderField("Content-type", "application/xml"));
-            response = AsimovTestCase.sendRequest(request);
-        } catch (Exception e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+
+
+        while (true) {
+
+            int i = 0;
+            try {
+                HttpRequest request = HttpRequest.Builder.create().getRequest();
+                request.addHeaderField(mAuthorizedHeader);
+                request.setUri(String.format(URI_TEMPLATE, mPmsServerIp, mPmsServerPort, path));
+                request.setMethod("GET");
+                request.addHeaderField(new HttpHeaderField("Content-type", "application/xml"));
+                response = AsimovTestCase.sendRequest(request, null, false, false, AsimovTestCase.Body.BODY, 30 * 1000, null);    //workaround for ticket ASMV-22199
+
+                //response = AsimovTestCase.sendRequest(request);
+            } catch (Exception e) {
+                logger.error(ExceptionUtils.getStackTrace(e));
+                logger.debug("Try again");
+
+                if (i >= 3) {
+                    break;
+                }
+                i++;
+            }
+
+            break;
         }
         return response;
     }
@@ -944,7 +960,7 @@ public class PMSUtil {
         String value = "1:24,26:109,111:219,221:464,466:586,588:992,994,996:7734,7736:8086,8088:8098,8100:8110,8112:65535";
         String path = "@asimov@interception@octcpd";
         try {
-            if(add) {
+            if (add) {
                 PMSUtil.addPolicies(new Policy[]{new Policy(name, value, path, true)});
             } else {
                 PMSUtil.cleanPaths(new String[]{path});
