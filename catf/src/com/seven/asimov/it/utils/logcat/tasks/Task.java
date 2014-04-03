@@ -171,9 +171,9 @@ public abstract class Task<T extends LogEntryWrapper> {
             try {
                 hour = TimeZones.valueOf(matcher.group(timeZoneIndex)).getId();
             } catch (IllegalArgumentException e) {
-                logger.error("Time zone from client:"+timeZoneIndex+" convert failed.Using default timezone GMT.");
-                logger.error(ExceptionUtils.getStackTrace(e));
-
+                //.Using default timezone GMT.
+                //logger.error(ExceptionUtils.getStackTrace(e));
+                hour=TimeZones.valueOf("GMT").getId();
             }
         }
         long timestamp = DateUtil.format(matcher.group(timeIndex).replaceAll("/", "-")) + hour * 3600 * 1000;
