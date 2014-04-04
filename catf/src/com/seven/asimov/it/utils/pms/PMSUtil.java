@@ -555,8 +555,9 @@ public class PMSUtil {
                 request.setMethod("GET");
                 request.addHeaderField(new HttpHeaderField("Content-type", "application/xml"));
                 response = AsimovTestCase.sendRequest(request, null, false, false, AsimovTestCase.Body.BODY, 30 * 1000, null);    //workaround for ticket ASMV-22199
-
                 //response = AsimovTestCase.sendRequest(request);
+
+                break;
             } catch (Exception e) {
                 logger.error(ExceptionUtils.getStackTrace(e));
                 logger.debug("Try again");
@@ -566,8 +567,6 @@ public class PMSUtil {
                 }
                 i++;
             }
-
-            break;
         }
         return response;
     }
