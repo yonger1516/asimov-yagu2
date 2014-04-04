@@ -46,15 +46,15 @@ public final class TelnetUtil extends FixtureSharingTestRunner {
             String[] versions = TFConstantsIF.SUPPORTED_SERVER_VERSIONS.split("@");
             logger.debug("Supported server versions: " + Arrays.toString(versions));
             try {
-                for (int i = 0; i < 3; i++) {
-                    String response = getOutPutFromTelnetCommand(host, port);
-                    for (String version : versions) {
-                        if (response != null && response.contains(version)) {
-                            logger.debug("Current server version is: " + version + " Expected server version is: " + TFConstantsIF.EXPECTED_SERVER_VERSION);
-                            return version;
-                        }
+
+                String response = getOutPutFromTelnetCommand(host, port);
+                for (String version : versions) {
+                    if (response != null && response.contains(version)) {
+                        logger.debug("Current server version is: " + version + " Expected server version is: " + TFConstantsIF.EXPECTED_SERVER_VERSION);
+                        return version;
                     }
                 }
+
             } catch (IOException e) {
                 logger.error(ExceptionUtils.getStackTrace(e));
             }

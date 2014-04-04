@@ -27,7 +27,7 @@
         <branding_file>${target}.target</branding_file>
         <branding_property>brand.properties</branding_property>
         <default_branding_file>default.target</default_branding_file>
-        <oc_version>3</oc_version>
+        <oc_version>2.3.1</oc_version>
         <ip_version>4</ip_version>
         <start_checks>true</start_checks>
         <testrunner></testrunner>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import com.seven.asimov.it.base.constants.TFConstantsIF;
+import com.seven.asimov.it.utils.PropertyLoadUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +37,8 @@ public class SmsUtil {
     private static final short INV_COMMAND_ID = 0x03EE;
 
     private static final short INV_NOTIFY_TYPE = 0;
-    private static final short INV_W_CACHE_SIZE = 6;  //byte(type)+byte(size)+int(subscriptionID)+byte(invType)+byte(sizeFactor)
-    private static final short INV_WO_CACHE_SIZE = 5; //byte(type)+byte(size)+int(subscriptionID)+byte(invType)
+    private static final short INV_W_CACHE_SIZE = 8;  //byte(type)+byte(size)+int(subscriptionID)+byte(invType)+byte(sizeFactor)
+    private static final short INV_WO_CACHE_SIZE = 7; //byte(type)+byte(size)+int(subscriptionID)+byte(invType)
 
     private Context ctx = null;
 
@@ -240,8 +242,16 @@ public class SmsUtil {
 
     private void putInvalidationNotification(DataOutputStream stream, int subscriptionID, boolean isIWC) throws IOException {
         stream.writeByte(INV_NOTIFY_TYPE);//Notification type
-        stream.writeByte(isIWC ? INV_W_CACHE_SIZE : INV_WO_CACHE_SIZE);
-        stream.writeInt(subscriptionID);
+
+        //compatible with oc client 2.3.1 skyline
+        if (PropertyLoadUtil.ocVersion.equals("2.3.1")){
+             stream.writeByte(isIWC ? INV_W_CACHE_SIZE-2 : INV_WO_CACHE_SIZE-2);   //byte length from int to short
+             stream.writeShort((short)subscriptionID);
+        } else{
+            stream.writeByte(isIWC ? INV_W_CACHE_SIZE : INV_WO_CACHE_SIZE);
+            stream.writeInt(subscriptionID);
+        }
+
         stream.writeByte(isIWC ? InvalidationType.INVALIDATE_WITH_CACHE.byteVal : InvalidationType.INVALIDATE_WITHOUT_CACHE.byteVal);
 
         if (isIWC)

@@ -121,7 +121,7 @@
     <entry key="it_package_name">com.seven.asimov.it</entry>
 
     <entry key="oc_server_version">2.3.</entry>
-    <entry key="oc_supported_server_versions">2.1.@2.2.@2.3.</entry>
+    <entry key="oc_supported_server_versions">2.1.@2.2.@2.3.@2.4.@2.5.</entry>
 
     <!--<comment>Traffic condition constants</comment>-->
     <entry key="traffic_property_name">traffic</entry>

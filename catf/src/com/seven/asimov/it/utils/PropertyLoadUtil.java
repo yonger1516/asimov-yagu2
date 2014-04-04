@@ -30,7 +30,7 @@ public final class PropertyLoadUtil {
     private static Properties catfProperties;
     private static Context context;
 
-    public static int ocVersion;
+    public static String ocVersion;
     public static int ipVersion;
     public static String ipv4_testrunner;
     public static String ipv6_testrunner;
@@ -203,7 +203,7 @@ public final class PropertyLoadUtil {
     }
 
     private static void initOCVersion() {
-        ocVersion = Integer.parseInt(getCatfProperty("oc_version"));
+        ocVersion =getCatfProperty("oc_version");
     }
 
     private static Properties getPropertiesFromAssets(String file) {
