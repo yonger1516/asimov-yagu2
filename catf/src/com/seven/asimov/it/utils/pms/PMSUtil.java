@@ -18,6 +18,8 @@ import com.seven.asimov.it.utils.pms.z7.IntArrayMap;
 import com.seven.asimov.it.utils.pms.z7.Marshaller;
 import com.seven.asimov.it.utils.pms.z7.Z7TransportAddress;
 import com.seven.asimov.it.utils.sms.SmsUtil;
+import com.seven.asimov.it.utils.MobileNetworkUtil;
+
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -115,6 +117,9 @@ public class PMSUtil {
 
     private static Model model;
     private static final String TAG = PMSUtil.class.getSimpleName();
+
+
+    private static MobileNetworkUtil mobileNetworkHelper;
 
     private static final Logger logger = LoggerFactory.getLogger(PMSUtil.class.getSimpleName());
 
@@ -669,6 +674,8 @@ public class PMSUtil {
         return ns;
     }
 
+
+
     private static class Namespace {
         String id;
         String name;
@@ -677,7 +684,7 @@ public class PMSUtil {
         String version;
         String deleted;
 
-        @Override
+
         public String toString() {
             return "id= " + id + " name= " + name + " type= " + type + " parentId= " + parentId + " version= "
                     + version + " deleted= " + deleted;
@@ -857,19 +864,26 @@ public class PMSUtil {
     }
 
     public static void cleanPaths(String[] paths) throws Exception {
+
+        openWifi();
         final HashSet<String> pathsToClear = new HashSet<String>();
         for (int i = 0; i < paths.length; i++) {
             pathsToClear.add(paths[i]);
         }
         PMSUtil.cleanPersonalProperties(pathsToClear);
+
+        closeWifi();
     }
 
     public static void addPolicies(Policy[] policiesToAdd) throws Exception {
+
+        openWifi();
         final HashSet<Policy> policies = new HashSet<Policy>();
         for (int i = 0; i < policiesToAdd.length; i++) {
             policies.add(policiesToAdd[i]);
         }
         PMSUtil.preparePmsServer(policies);
+        closeWifi();
     }
 
     public static void addPoliciesWithCheck(Policy[] policies) throws Exception {
@@ -966,4 +980,44 @@ public class PMSUtil {
             e.printStackTrace();
         }
     }
+
+
+
+    public static void setMobileHelper(MobileNetworkUtil helper) {
+        //To change body of created methods use File | Settings | File Templates.
+        mobileNetworkHelper =helper;
+
+    }
+
+    private static void openWifi(){
+
+        if (null==mobileNetworkHelper){
+            logger.error("MobileNetworkHelper not initilize");
+            return;
+        }
+        logger.debug(TAG,"Open wifi when setting policy by rest.");
+        mobileNetworkHelper.onWifiOnly();
+        try {
+            Thread.sleep(1000*30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    private static void closeWifi(){
+        if (null==mobileNetworkHelper){
+            logger.error("MobileNetworkHelper not initilize");
+            return;
+        }
+
+        logger.debug(TAG,"Close wifi after setting policy by rest.");
+        mobileNetworkHelper.on3gOnly();
+        try {
+            Thread.sleep(1000*30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+
 }
