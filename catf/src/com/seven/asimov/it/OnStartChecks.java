@@ -310,18 +310,7 @@ public enum OnStartChecks {
             Runtime.getRuntime().exec(startService).waitFor();
 
             if (check) {
-                Thread.sleep(OC_INSTALL_TIME); //wait 5 minutes at first
-                while (true) {
-                    try {
-                        fullStartCheck();
-                        break;
-                    } catch (Exception e) {
-                        logger.trace("there is no enough time to complete full check, wait more time and check continue.");
-                        Thread.sleep(1 * 60 * 1000);
-                    }
-
-                }
-
+                Thread.sleep(OC_INSTALL_TIME);
             }
 
 

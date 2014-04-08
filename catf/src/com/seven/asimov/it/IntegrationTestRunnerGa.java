@@ -241,6 +241,9 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
         try {
             if (TFConstantsIF.START_CHECKS) {
                 OnStartChecks.INSTACE.installOC(getContext(),true);
+
+                //TestUtil.sleep(4 * 30000);
+                OnStartChecks.INSTACE.fullStartCheck(); //move the full check to this step
             }
         } catch (Exception e) {
             logger.error(ExceptionUtils.getStackTrace(e));
@@ -272,7 +275,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
         String[] startService = new String[]{"su", "-c", "am startservice com.seven.asimov/.ocengine.OCEngineService"};
 
-        try {
+      /*  try {
             if (TFConstantsIF.START_CHECKS) {
                 TestUtil.sleep(4 * 30000);
                 OnStartChecks.INSTACE.fullStartCheck();
@@ -281,7 +284,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             logger.error(ExceptionUtils.getStackTrace(e));
             endSuite(e);
         }
-
+*/
         if (Build.MODEL.equals("functional_tests") && !OCUtil.isOpenChannelRunning()) {
             Runtime.getRuntime().exec(mkdir).waitFor();
             Runtime.getRuntime().exec(chmod).waitFor();
