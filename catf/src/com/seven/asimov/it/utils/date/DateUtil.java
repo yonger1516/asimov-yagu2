@@ -6,6 +6,7 @@ import android.util.Log;
 import com.seven.asimov.it.base.AsimovTestCase;
 import com.seven.asimov.it.base.HttpRequest;
 import com.seven.asimov.it.base.HttpResponse;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,8 +70,8 @@ public final class DateUtil {
                 logger.info("Sync is failed: response does not exist");
             }
         } catch (Exception e) {
+            logger.error(ExceptionUtils.getStackTrace(e));
             logger.error("Unable to set time on your device");
-//            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

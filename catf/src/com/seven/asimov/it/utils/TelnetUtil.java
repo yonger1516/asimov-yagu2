@@ -48,6 +48,7 @@ public final class TelnetUtil extends FixtureSharingTestRunner {
             try {
 
                 String response = getOutPutFromTelnetCommand(host, port);
+                logger.debug("Response from relay server:"+response);
                 for (String version : versions) {
                     if (response != null && response.contains(version)) {
                         logger.debug("Current server version is: " + version + " Expected server version is: " + TFConstantsIF.EXPECTED_SERVER_VERSION);

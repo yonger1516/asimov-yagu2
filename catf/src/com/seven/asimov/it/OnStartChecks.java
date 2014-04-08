@@ -57,7 +57,7 @@ public enum OnStartChecks {
     private static FirewallPolicyMgmtDataResponseTask firewallPolicyMgmtDataResponseTask = new FirewallPolicyMgmtDataResponseTask();
     private static ResponseFirewallPolicyReceivedTask responseFirewallPolicyReceivedTask = new ResponseFirewallPolicyReceivedTask();
     private static StartingFirewallTask startingFirewallTask = new StartingFirewallTask();
-    private static final int OC_INSTALL_TIME = 12 * 60 * 1000;
+    private static final int OC_INSTALL_TIME = 5 * 60 * 1000;
 
     private static volatile boolean runThread;
     private static Thread radioKeep;
@@ -286,7 +286,7 @@ public enum OnStartChecks {
      *
      * @throws Exception
      */
-    public void installOC(final Context context) throws Exception {
+    public void installOC(final Context context, boolean check) throws Exception {
         try {
             String[] uninstallOc = {"su", "-c", "pm uninstall com.seven.asimov"};
             String[] installOc = {"su", "-c", "pm install -r " + OC_APK_FILENAME};
@@ -308,7 +308,23 @@ public enum OnStartChecks {
             Thread.sleep(10000);
             logger.debug("Sending intent for start OC Engine");
             Runtime.getRuntime().exec(startService).waitFor();
-            Thread.sleep(OC_INSTALL_TIME);
+
+            if (check) {
+                Thread.sleep(OC_INSTALL_TIME); //wait 5 minutes at first
+                while (true) {
+                    try {
+                        fullStartCheck();
+                        break;
+                    } catch (Exception e) {
+                        logger.trace("there is no enough time to complete full check, wait more time and check continue.");
+                        Thread.sleep(1 * 60 * 1000);
+                    }
+
+                }
+
+            }
+
+
         } finally {
             logcatUtil.stop();
             stopRadioKeepUpThread();

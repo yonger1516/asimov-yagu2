@@ -240,7 +240,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
         try {
             if (TFConstantsIF.START_CHECKS) {
-                OnStartChecks.INSTACE.installOC(getContext());
+                OnStartChecks.INSTACE.installOC(getContext(),true);
             }
         } catch (Exception e) {
             logger.error(ExceptionUtils.getStackTrace(e));
@@ -494,10 +494,10 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
     private static void updateIpTables(boolean add, boolean setUp) throws Exception {
         if (TFConstantsIF.TPROXY == 0) {
-            IpTablesUtil.bypassPort(8087, add);
+            IpTablesUtil.bypassPort(8087, add);   //add passport on device by iptables tool immediately
             IpTablesUtil.bypassPort(8099, add);
         } else if (setUp) {
-            PMSUtil.addConfigurationBypassPorts(add);
+            PMSUtil.addConfigurationBypassPorts(add); //push pms setting
         }
     }
 
