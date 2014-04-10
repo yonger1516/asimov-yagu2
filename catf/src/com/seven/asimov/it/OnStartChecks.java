@@ -57,7 +57,7 @@ public enum OnStartChecks {
     private static FirewallPolicyMgmtDataResponseTask firewallPolicyMgmtDataResponseTask = new FirewallPolicyMgmtDataResponseTask();
     private static ResponseFirewallPolicyReceivedTask responseFirewallPolicyReceivedTask = new ResponseFirewallPolicyReceivedTask();
     private static StartingFirewallTask startingFirewallTask = new StartingFirewallTask();
-    private static final int OC_INSTALL_TIME = 5 * 60 * 1000;
+    private static final int OC_INSTALL_TIME = 7 * 60 * 1000;
 
     private static volatile boolean runThread;
     private static Thread radioKeep;

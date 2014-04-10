@@ -22,6 +22,7 @@ public final class TelnetUtil extends FixtureSharingTestRunner {
         String toReturn = null;
         TelnetClient tc = new TelnetClient();
         tc.connect(host, port);
+        tc.setSoTimeout(30*1000);
         InputStream instr = tc.getInputStream();
         try {
             byte[] buff = new byte[1024];

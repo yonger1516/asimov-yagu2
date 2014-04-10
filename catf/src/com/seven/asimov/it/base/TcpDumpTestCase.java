@@ -835,11 +835,7 @@ public class TcpDumpTestCase extends AsimovTestCase implements HttpUrlConnection
         tcpDump.start();
         testStartTimestamp = System.currentTimeMillis();
         //logger.trace("testStartTimestamp=" + testStartTimestamp + "  " + new Date(testStartTimestamp).toString());
-
-        MobileNetworkUtil mobileNetworkHelper = MobileNetworkUtil.init(getContext());
-        PMSUtil.setMobileHelper(mobileNetworkHelper);
-
-        super.setUp();
+        //super.setUp();
 
         super.runTest();
         tcpDump.stop();

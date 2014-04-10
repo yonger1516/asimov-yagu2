@@ -1,5 +1,6 @@
 package com.seven.asimov.it.utils.pms;
 
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import com.seven.asimov.it.asserts.CATFAssert;
@@ -9,8 +10,7 @@ import com.seven.asimov.it.base.HttpRequest;
 import com.seven.asimov.it.base.HttpResponse;
 import com.seven.asimov.it.base.constants.BaseConstantsIF;
 import com.seven.asimov.it.base.constants.TFConstantsIF;
-import com.seven.asimov.it.utils.ShellUtil;
-import com.seven.asimov.it.utils.TestUtil;
+import com.seven.asimov.it.utils.*;
 import com.seven.asimov.it.utils.logcat.LogcatUtil;
 import com.seven.asimov.it.utils.logcat.tasks.policyTasks.PolicyAddedTask;
 import com.seven.asimov.it.utils.logcat.wrappers.PolicyWrapper;
@@ -18,7 +18,6 @@ import com.seven.asimov.it.utils.pms.z7.IntArrayMap;
 import com.seven.asimov.it.utils.pms.z7.Marshaller;
 import com.seven.asimov.it.utils.pms.z7.Z7TransportAddress;
 import com.seven.asimov.it.utils.sms.SmsUtil;
-import com.seven.asimov.it.utils.MobileNetworkUtil;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
@@ -119,7 +118,7 @@ public class PMSUtil {
     private static final String TAG = PMSUtil.class.getSimpleName();
 
 
-    private static MobileNetworkUtil mobileNetworkHelper;
+    private static Context context;
 
     private static final Logger logger = LoggerFactory.getLogger(PMSUtil.class.getSimpleName());
 
@@ -675,7 +674,6 @@ public class PMSUtil {
     }
 
 
-
     private static class Namespace {
         String id;
         String name;
@@ -865,25 +863,36 @@ public class PMSUtil {
 
     public static void cleanPaths(String[] paths) throws Exception {
 
-        openWifi();
-        final HashSet<String> pathsToClear = new HashSet<String>();
-        for (int i = 0; i < paths.length; i++) {
-            pathsToClear.add(paths[i]);
-        }
-        PMSUtil.cleanPersonalProperties(pathsToClear);
+        try {
+            setWiFi(true);
 
-        closeWifi();
+            final HashSet<String> pathsToClear = new HashSet<String>();
+            for (int i = 0; i < paths.length; i++) {
+                pathsToClear.add(paths[i]);
+            }
+            PMSUtil.cleanPersonalProperties(pathsToClear);
+        } finally {
+            setWiFi(false);
+            PMSUtil.clearPersist();    //fixed CATF-21
+
+        }
+
     }
 
     public static void addPolicies(Policy[] policiesToAdd) throws Exception {
 
-        openWifi();
-        final HashSet<Policy> policies = new HashSet<Policy>();
-        for (int i = 0; i < policiesToAdd.length; i++) {
-            policies.add(policiesToAdd[i]);
+        try {
+            setWiFi(true);
+
+            final HashSet<Policy> policies = new HashSet<Policy>();
+            for (int i = 0; i < policiesToAdd.length; i++) {
+                policies.add(policiesToAdd[i]);
+            }
+            PMSUtil.preparePmsServer(policies);
+        } finally {
+            setWiFi(false);
         }
-        PMSUtil.preparePmsServer(policies);
-        closeWifi();
+
     }
 
     public static void addPoliciesWithCheck(Policy[] policies) throws Exception {
@@ -957,13 +966,19 @@ public class PMSUtil {
     }
 
     public static void clearPoliciesByRegexp(String regexp, String path) {
+
         try {
+            setWiFi(true);
             PMSUtil.initModelInfo();
             PMSUtil.getPropertiesForNamespace(path);
             cleanAlreadyDetectedPolicies(regexp, path);
         } catch (Exception e) {
             logger.error(ExceptionUtils.getStackTrace(e));
+        } finally {
+            setWiFi(false);
         }
+
+
     }
 
     public static void addConfigurationBypassPorts(boolean add) {
@@ -982,41 +997,54 @@ public class PMSUtil {
     }
 
 
-
-    public static void setMobileHelper(MobileNetworkUtil helper) {
-        //To change body of created methods use File | Settings | File Templates.
-        mobileNetworkHelper =helper;
+    public static void setContext(Context c) {
+        context = c;
 
     }
 
-    private static void openWifi(){
+    private static MobileNetworkUtil getMobileHelper() throws Exception {
 
-        if (null==mobileNetworkHelper){
-            logger.error("MobileNetworkHelper not initilize");
-            return;
+        if (null == context) {
+            throw new Exception("Context not initialize");
         }
-        logger.debug(TAG,"Open wifi when setting policy by rest.");
-        mobileNetworkHelper.onWifiOnly();
-        try {
-            Thread.sleep(1000*30);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        return MobileNetworkUtil.init(context);
     }
 
-    private static void closeWifi(){
-        if (null==mobileNetworkHelper){
-            logger.error("MobileNetworkHelper not initilize");
+
+    private static void setWiFi(boolean open) {
+
+        try {
+            MobileNetworkUtil helper = getMobileHelper();
+            if (open) {
+                logger.debug("Open wifi only.");
+                helper.onWifiOnly();
+
+            } else {
+                logger.debug("Close wifi.");
+                helper.on3gOnly();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return;
         }
 
-        logger.debug(TAG,"Close wifi after setting policy by rest.");
-        mobileNetworkHelper.on3gOnly();
-        try {
-            Thread.sleep(1000*30);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        TestUtil.sleep(15 * 1000);
+        //fix issue CATF-18
+        if (!ConnectivityUtil.ping(AsimovTestCase.TEST_RESOURCE_HOST)) {
+            logger.debug("Force turn screen on to enable network changes");
+            ScreenUtils.newScreenOn(context, true);
+            TestUtil.sleep(15 * 1000);
         }
+
+    }
+
+    public static void clearPersist(){
+        personalPolicies.clear();
+        globalPolicies.clear();
+        initializedPaths.clear();
+        setOfGlobalScopes.clear();
     }
 
 

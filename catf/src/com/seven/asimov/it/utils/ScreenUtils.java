@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.PowerManager;
 import com.seven.asimov.it.utils.ScreenUtils.*;
 
 import java.util.HashMap;
@@ -23,7 +24,28 @@ public class ScreenUtils {
 	private static Object lock = new Object();
 	
 	private static Map<ScreenSpyResult, ScreenSpyReceiver> screenSpyReceivers = new HashMap<ScreenUtils.ScreenSpyResult, ScreenSpyReceiver>();
-	
+
+    private static   PowerManager powerManager;
+    private static PowerManager.WakeLock wakeLock;
+
+    public static void newScreenOn(Context c,boolean autoRelease){
+
+        powerManager= (PowerManager) c.getSystemService(Context.POWER_SERVICE);
+        wakeLock=powerManager.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        wakeLock.acquire();
+
+        if (autoRelease){
+            TestUtil.sleep(5 * 1000);
+            releaseWakeLock();
+        }
+
+    }
+
+
+    public static void releaseWakeLock(){
+        wakeLock.release();
+    }
+
 	public static void screenOff() {
 		sendBroadcastMessage(Screenoff);
 	}

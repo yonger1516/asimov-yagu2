@@ -88,6 +88,8 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             ExceptionSearchEngine.init(getContext());
             PropertyLoadUtil.init(getContext());
             PropertyLoadUtil.initIPAndTestRunner();
+
+            PMSUtil.setContext(staticContext);
             DateUtil.setTimeZoneOnDevice(getContext(), TimeZone.getTimeZone("GMT"));
             DateUtil.syncTimeWithTestRunner();
             mFilesDir = getTargetContext().getFilesDir().getAbsolutePath();
@@ -243,6 +245,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
                 OnStartChecks.INSTACE.installOC(getContext(),true);
 
                 //TestUtil.sleep(4 * 30000);
+                logger.debug("Start full check...");
                 OnStartChecks.INSTACE.fullStartCheck(); //move the full check to this step
             }
         } catch (Exception e) {
