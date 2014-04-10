@@ -47,13 +47,15 @@ public class IWOCTestCase extends TcpDumpTestCase {
                                     RadioState radioState, boolean isLongPolling, boolean invalidateReceived)
             throws Throwable {
 
-        ScreenUtils.ScreenSpyResult spy = ScreenUtils.switchScreenAndSpy(getContext(),
-                screenState == ScreenState.SCREEN_ON);
+
         if (aggressivenessLevel == 0) {
             PMSUtil.cleanPaths(new String[]{AGGRESSIVENESS_REST_PROPERTY_PATH});
         } else {
             PMSUtil.addPoliciesWithCheck(new Policy[]{new Policy(AGGRESSIVENESS_REST_PROPERTY_NAME_IWOC, String.valueOf(aggressivenessLevel), AGGRESSIVENESS_REST_PROPERTY_PATH, true)});
         }
+
+        ScreenUtils.ScreenSpyResult spy = ScreenUtils.switchScreenAndSpy(getContext(),
+                screenState == ScreenState.SCREEN_ON);
 
         try {
             if (radioState == RadioState.RADIO_UP) {

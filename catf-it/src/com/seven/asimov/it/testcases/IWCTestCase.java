@@ -45,11 +45,14 @@ public class IWCTestCase extends TcpDumpTestCase {
     protected void checkAggressiveIWC(String resource, int aggressivenessLevel, ScreenState screenState,
                                       RadioState radioState, boolean isLongPolling, boolean invalidateReceived)
             throws Throwable {
+        ScreenUtils.ScreenSpyResult spy = null;
 
-        ScreenUtils.ScreenSpyResult spy = ScreenUtils.switchScreenAndSpy(getContext(),
-                screenState == ScreenState.SCREEN_ON);
         try {
             PMSUtil.addPoliciesWithCheck(new Policy[]{new Policy(AGGRESSIVENESS_REST_PROPERTY_NAME, String.valueOf(aggressivenessLevel), AGGRESSIVENESS_REST_PROPERTY_PATH, true)});
+
+            spy = ScreenUtils.switchScreenAndSpy(getContext(),
+                    screenState == ScreenState.SCREEN_ON);
+
             if (radioState == RadioState.RADIO_UP) {
                 TestCaseThread radioUpKeeperThread = createRadioUpKeeperThread();
                 if (isLongPolling) {
@@ -70,7 +73,9 @@ public class IWCTestCase extends TcpDumpTestCase {
             }
             assertTrue("Screen state is not as expected ", spy.isScreenAsExpected());
         } finally {
-            ScreenUtils.finishScreenSpy(getContext(), spy);
+            if (null != spy) {
+                ScreenUtils.finishScreenSpy(getContext(), spy);
+            }
             PMSUtil.cleanPaths(new String[]{AGGRESSIVENESS_REST_PROPERTY_PATH});
         }
     }
