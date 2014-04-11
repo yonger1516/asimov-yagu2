@@ -128,8 +128,8 @@ public class LogcatUtil {
         if (logcatState != LogcatState.Running)
             return;
         logger.info("Stopping logcat thread [Time = " + System.currentTimeMillis() + "  ,DateTime = " + new Date(System.currentTimeMillis()) + "]");
-        if (logcatStream != null)
-            logcatStream.stopReading();
+       /* if (logcatStream != null)
+            logcatStream.stopReading();*/
         //logcatThread.interrupt();
         isStop=true;
         logcatThread.join();
@@ -191,14 +191,20 @@ public class LogcatUtil {
             } finally {
                 logger.info("Finished parsing logcat records [Time = " + System.currentTimeMillis() + "  ,DateTime = " +
                         new Date(System.currentTimeMillis()) + "]");
-                IOUtil.safeClose(reader);
 
                 try {
                     debugWriter.flush();
                     debugWriter.close();
+
+                    IOUtil.safeClose(reader);
+
+                    logcatStream.close(); //fixed CATF-23
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
                 try {
                     killLogcatProcess(initialLogcatPids);
                 } catch (IOException e) {

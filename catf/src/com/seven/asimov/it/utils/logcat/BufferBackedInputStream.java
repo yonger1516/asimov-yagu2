@@ -2,6 +2,7 @@ package com.seven.asimov.it.utils.logcat;
 
 
 import android.util.Log;
+import com.seven.asimov.it.utils.TestUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -328,6 +329,8 @@ public class BufferBackedInputStream extends InputStream {
     boolean interrupted = false;
     InputStream wrappedStream;
 
+    volatile boolean stopFlag=false;
+
     private Thread writerThread = new Thread() {
         @Override
         public void run() {
@@ -335,12 +338,12 @@ public class BufferBackedInputStream extends InputStream {
             ByteBlock writeBlock = null;
             int writeRes;
             Log.v("###", "Writer thread started");
-            while (true) {
+            while (!stopFlag) {
                 try {
                     writeBlock = manager.requestNextWritableBlock(writeBlock);
                     do {
                         writeRes = writeBlock.write(readChannel);
-                    } while (writeRes > 0);
+                    } while (writeRes > 0&&!stopFlag);
 
                     if (writeRes < 0) {
                         break;
@@ -357,7 +360,7 @@ public class BufferBackedInputStream extends InputStream {
     public BufferBackedInputStream(InputStream wrappedStream, int blockSize, int memoryLimit, String swapPath) throws Exception {
         manager = new BlockManager(blockSize, memoryLimit, swapPath);
         this.wrappedStream = wrappedStream;
-        readChannel = Channels.newChannel(wrappedStream);
+        readChannel = Channels.newChannel(this.wrappedStream);
         currentReadBlock = null;
         writerThread.start();
 
@@ -372,7 +375,15 @@ public class BufferBackedInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
+
+        //stop write thread
+        stopFlag=true;
+        TestUtil.sleep(1000);
+
+        readChannel.close();
+        wrappedStream.close();
         manager.close();
+
     }
 
     @Override
