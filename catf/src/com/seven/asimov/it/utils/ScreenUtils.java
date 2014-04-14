@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
 import com.seven.asimov.it.utils.ScreenUtils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 
  */
 public class ScreenUtils {
+    private static final Logger logger= LoggerFactory.getLogger(ScreenUtils.class);
 
 	private static final String Screenoff = Intent.ACTION_SCREEN_OFF;
 	private static final String Screenon = Intent.ACTION_SCREEN_ON;
@@ -62,7 +65,7 @@ public class ScreenUtils {
 	 * @param spy Object that contains info about last received action
 	 */
 	public static void startScreenSpy(Context c, ScreenSpyResult spy) {
-	    System.out.println("Starting Screen Spy");
+	    logger.info("Starting Screen Spy");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -102,7 +105,7 @@ public class ScreenUtils {
 	 */
 	public static int finishScreenSpy(Context c, ScreenSpyResult spy) {
 	    int count = refCount.decrementAndGet();
-	    System.out.println("Finishing Screen Spy (still active spy count is " + count + ")");
+	   logger.info("Finishing Screen Spy (still active spy count is " + count + ")");
 	    try {
            ScreenSpyReceiver r = screenSpyReceivers.remove(spy);
            if (r != null) c.unregisterReceiver(r);
@@ -172,7 +175,8 @@ public class ScreenUtils {
 	 *
 	 */
 	public static class ScreenSpyResult {
-	    
+	    private static final Logger logger=LoggerFactory.getLogger(ScreenSpyResult.class);
+
 	    public ScreenSpyResult(boolean expectedScreenOn) {
 	        this.expectedScreenOn = expectedScreenOn;
 	    }
@@ -194,6 +198,7 @@ public class ScreenUtils {
 }
 
 class ScreenSpyReceiver extends BroadcastReceiver {
+    private static final Logger logger=LoggerFactory.getLogger(ScreenSpyReceiver.class);
     
     private ScreenSpyResult spyResult;
     
@@ -208,7 +213,7 @@ class ScreenSpyReceiver extends BroadcastReceiver {
         } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
             spyResult.setScreenOn(false);
         }
-        System.out.println("Screen Spy: Action received: " + intent.getAction());
+        logger.info("Screen Spy: Action received: " + intent.getAction());
     }
     
 }

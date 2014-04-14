@@ -86,7 +86,7 @@ public final class PrepareResourceUtil {
     }
 
     public static HttpResponse prepareResource304(String uri, String rawHeaders) throws Exception {
-        System.out.println("Preparing test resource...");
+        logger.info("Preparing test resource...");
         HttpRequest request = createRequest().setUri(uri).setMethod("GET")
                 .addHeaderField("X-OC-ChangeResponseContent", "")
                 .addHeaderField("X-OC-ChangeResponseStatus", "304")
@@ -129,13 +129,13 @@ public final class PrepareResourceUtil {
                 AsimovTestCase.sendRequest(request, null, false, true, AsimovTestCase.Body.NOBODY);
             }
         } catch (Exception e) {
-            System.out.println("Invalidating resource, exception ignored");
+            logger.error("Invalidating resource, exception ignored");
             e.printStackTrace();
         }
     }
 
     public static void prepareResourceWithDelayedChange(String uri, int delay) throws Exception {
-        System.out.println("Preparing test resource...");
+        logger.info("Preparing test resource...");
         HttpRequest request = createRequest().setUri(uri).setMethod("GET")
                 .addHeaderField("X-OC-ChangeContentAfterSec", Integer.toString(delay))
                 .getRequest();
@@ -143,7 +143,7 @@ public final class PrepareResourceUtil {
     }
 
     public static void prepareResourceWithDelay(String uri, int delay) {
-        System.out.println("Setting up resource...");
+        logger.info("Setting up resource...");
         HttpRequest request = createRequest().setUri(uri).setMethod("GET")
                 .addHeaderField("X-OC-Stateless-Sleep", "true")
                 .addHeaderField("X-OC-ChangeSleep", Integer.toString(delay))
@@ -164,7 +164,7 @@ public final class PrepareResourceUtil {
                     .getRequest();
             AsimovTestCase.sendRequest(request, null, false, true, AsimovTestCase.Body.BODY);
         } catch (Exception e) {
-            System.out.println("Invalidating resource, exception ignored");
+            logger.error("Invalidating resource, exception ignored");
             e.printStackTrace();
         }
     }

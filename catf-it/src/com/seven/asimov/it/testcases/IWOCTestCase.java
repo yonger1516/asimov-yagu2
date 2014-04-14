@@ -12,11 +12,16 @@ import com.seven.asimov.it.utils.logcat.wrappers.StartPollWrapper;
 import com.seven.asimov.it.utils.pms.PMSUtil;
 import com.seven.asimov.it.utils.pms.Policy;
 import com.seven.asimov.it.utils.sms.SmsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 public class IWOCTestCase extends TcpDumpTestCase {
     private static final String TAG = IWOCTestCase.class.getSimpleName();
+
+    private static final Logger logger= LoggerFactory.getLogger(IWOCTestCase.class);
+
     private static final String AGGRESSIVENESS_REST_PROPERTY_PATH = "@asimov@http";
     private static final String AGGRESSIVENESS_REST_PROPERTY_NAME_IWOC = "no_cache_invalidate_aggressiveness";
     private static final int RADIO_KEEPER_DELAY_MS = 3 * 1000;
@@ -115,7 +120,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
                     logcatUtil.stop();
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-                    Log.i(TAG, "Start poll wrapper object" + startPoll);
+                   logger.info(TAG, "Start poll wrapper object" + startPoll);
                     long preparationEnd = System.currentTimeMillis();
                     long preparationDelay = preparationEnd - preparationStart;
                     logSleeping(requestInterval - preparationDelay - response.getDuration());
@@ -169,7 +174,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
                     logcatUtil.stop();
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-                    Log.i(TAG, "Start poll wrapper object" + startPoll);
+                    logger.info(TAG, "Start poll wrapper object" + startPoll);
                     long preparationEnd = System.currentTimeMillis();
                     long preparationDelay = preparationEnd - preparationStart;
                     logSleeping(requestInterval - preparationDelay - response.getDuration());
@@ -249,7 +254,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
             logcatUtil.stop();
             assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
             StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-            Log.i(TAG, "Start poll wrapper object" + startPoll);
+            logger.info(TAG, "Start poll wrapper object" + startPoll);
             long preparationEnd = System.currentTimeMillis();
             long preparationDelay = preparationEnd - preparationStart;
             logSleeping((int) (requestInterval * 0.25) - preparationDelay - response.getDuration());
@@ -273,7 +278,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "Setting response delay to " + delaySeconds + " sec");
+                logger.info(TAG, "Setting response delay to " + delaySeconds + " sec");
                 HttpRequest modificationRequest = request.copy();
                 modificationRequest.addHeaderField(new HttpHeaderField("X-OC-Stateless-Sleep", "true"));
                 modificationRequest.addHeaderField(new HttpHeaderField("X-OC-ChangeSleep", Integer.toString(delaySeconds)));

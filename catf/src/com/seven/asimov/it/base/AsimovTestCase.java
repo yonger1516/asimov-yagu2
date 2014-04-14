@@ -9,6 +9,7 @@ import com.seven.asimov.it.base.interfaces.HttpUrlConnectionIF;
 import com.seven.asimov.it.utils.IOUtil;
 import com.seven.asimov.it.utils.TestUtil;
 import com.seven.asimov.it.utils.date.DateUtil;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
@@ -310,7 +311,7 @@ public class AsimovTestCase extends AndroidTestCase {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(ExceptionUtils.getFullStackTrace(e));
             }
 
             boolean isImageBody = false;
@@ -441,9 +442,9 @@ public class AsimovTestCase extends AndroidTestCase {
 
             return response;
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getFullStackTrace(e));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getFullStackTrace(e));
         } finally {
             IOUtil.safeClose(in);
             IOUtil.safeClose(dis);
@@ -657,7 +658,7 @@ public class AsimovTestCase extends AndroidTestCase {
                     try {
                         IOUtil.transfer(connIn, baos, new byte[1024]);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        logger.error(ExceptionUtils.getFullStackTrace(e));
                         // Ignored
                     }
                 } else {
@@ -857,9 +858,9 @@ public class AsimovTestCase extends AndroidTestCase {
 
             return response;
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getFullStackTrace(e));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getFullStackTrace(e));
         } finally {
             baos = null;
             IOUtil.safeClose(in);
@@ -993,7 +994,7 @@ public class AsimovTestCase extends AndroidTestCase {
                     sb.append(line);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(ExceptionUtils.getFullStackTrace(e));
             } finally {
                 IOUtil.safeClose(in);
             }
