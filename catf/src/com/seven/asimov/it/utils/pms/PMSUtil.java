@@ -292,7 +292,7 @@ public class PMSUtil {
     }
 
     public static void deleteProperty(String propertyId) {
-        deleteProperty(propertyId, true);
+        deleteProperty(propertyId, false); //disable force update
     }
 
     public static void deleteProperty(String propertyId, boolean forceUpdate) {
@@ -309,6 +309,10 @@ public class PMSUtil {
             pushToClient();
             getPropertyInfo(propertyId);
 
+
+            logger.info("Sleeping 30s..., to wait delete function successful on server side.");
+            TestUtil.sleep(30*1000);
+            //wait for 30s around, the delete function will be successful on server side, so disable to use forceupdate bellow to avoid additional policies
             if (forceUpdate) {
                 int randomValue = (int) (Math.random() * 1000);
                 String id = createPersonalScopeProperty(String.format("forUpdate%d", randomValue), "@asimov", "value", true);
@@ -404,20 +408,35 @@ public class PMSUtil {
         }
     }
 
-    private static void addPersonalPolicy(Policy policy) {
-        String personalId = createPersonalScopeProperty(policy.getName(), policy.getPath(), policy.getValue(), true);
-        Property personalToAdd = getPropertyInfo(personalId);
-        personalToAdd.setPath(policy.getPath());
-        personalPolicies.add(personalToAdd);
-        logger.debug("2: " + personalPolicies.size());
+
+
+    private static void addPersonalPolicy(Policy policy) throws Exception {
+        try {
+            String personalId = createPersonalScopeProperty(policy.getName(), policy.getPath(), policy.getValue(), true);
+            Property personalToAdd = getPropertyInfo(personalId);
+            personalToAdd.setPath(policy.getPath());
+            personalPolicies.add(personalToAdd);
+            logger.debug("Personal policy size now:" + personalPolicies.size());
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    private static void fillListOfPolicies(HashSet<String> setOfPaths) {
-        for (String path : setOfPaths) {
-            if (!initializedPaths.contains(path)) {
-                getPropertiesForNamespace(path);
-                initializedPaths.add(path);
+
+    private static void fillListOfPolicies(HashSet<String> setOfPaths) throws Exception {
+
+        try {
+
+            for (String path : setOfPaths) {
+                if (!initializedPaths.contains(path)) {
+                    getPropertiesForNamespace(path);
+                    initializedPaths.add(path);
+                }
             }
+
+        } catch (Exception e) {
+            logger.error(ExceptionUtils.getFullStackTrace(e));
+            throw new Exception(e);
         }
     }
 
@@ -425,33 +444,44 @@ public class PMSUtil {
         return source.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("'", "&quot;");
     }
 
-    private static void getPropertiesForNamespace(String path) {
-        Namespace ns = getNameSpaceInfo(path, false, true);
-        if (ns.id != null) {
-            Document doc = getXmlDocumentFromResponse(sendGetHttpRequestToPms(String.format(REST_NAMESPACE_PROPERTIES, ns.id)));
-            NodeList properties = doc.getElementsByTagName("property");
-            for (int i = 0; i < properties.getLength(); i++) {
-                Node node = properties.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    String propertyId = element.getAttribute(ID);
-                    String scopeId = getTagValue(SCOPE_ID, element);
-                    if (model.scopeId != null && model.scopeId.equals(scopeId)) {
-                        Property property = getPropertyInfo(propertyId);
-                        property.value = replaceMetaCharacters(property.value);
-                        property.setPath(path);
-                        personalPolicies.add(property);
-                        logger.debug("Adding a personal policy: " + personalPolicies.size());
-                    } else if (setOfGlobalScopes.contains(scopeId)) {
-                        Property property = getPropertyInfo(propertyId);
-                        property.value = replaceMetaCharacters(property.value);
-                        property.setPath(path);
-                        globalPolicies.add(property);
+    private static void getPropertiesForNamespace(String path) throws Exception {
+        try {
+
+            Namespace ns = getNameSpaceInfo(path, false, true);
+
+            if (ns.id != null) {
+                Document doc = getXmlDocumentFromResponse(sendGetHttpRequestToPms(String.format(REST_NAMESPACE_PROPERTIES, ns.id)));
+                NodeList properties = doc.getElementsByTagName("property");
+
+                logger.debug(String.format("Number of nodes: %s", properties.getLength()));
+
+                for (int i = 0; i < properties.getLength(); i++) {
+                    Node node = properties.item(i);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element element = (Element) node;
+                        String propertyId = element.getAttribute(ID);
+                        String scopeId = getTagValue(SCOPE_ID, element);
+                        if (model.scopeId != null && model.scopeId.equals(scopeId)) {
+                            Property property = getPropertyInfo(propertyId);
+                            property.value = replaceMetaCharacters(property.value);
+                            property.setPath(path);
+                            personalPolicies.add(property);
+                            logger.debug("Adding a personal policy: " + property);
+                        } else if (setOfGlobalScopes.contains(scopeId)) {
+                            Property property = getPropertyInfo(propertyId);
+                            property.value = replaceMetaCharacters(property.value);
+                            property.setPath(path);
+                            globalPolicies.add(property);
+                            logger.debug("Adding a global policy: " + property);
+                        }
                     }
                 }
+            } else {
+                logger.warn(String.format("There is no namespace: %s", path));
             }
-        } else {
-            logger.warn(String.format("There is no namespace: %s", path));
+        } catch (Exception e) {
+            logger.error(ExceptionUtils.getFullStackTrace(e));
+            throw new Exception(e);
         }
     }
 
@@ -471,34 +501,44 @@ public class PMSUtil {
         return "";
     }
 
-    private static void processPersonalPolicy(Policy policy, int personalIndex) {
-        Property property = personalPolicies.get(personalIndex);
-        if (!policy.getValue().equals(property.value) && policy.isShouldBe()) {
-            logger.debug("Updating personal policy: " + property.toString());
-            HttpResponse response = sendHttpRequestToPms(REST_BATCH, String.format(mUpdateProperty, property.id, property.name, policy.getValue(), property.scopeId, property.namespaceId));
-            pushToClient();
-            personalPolicies.remove(property);
-            String idOfUpdatedPolicy = getAttributeFromTag(getXmlDocumentFromResponse(response), "results", "objectId");
-            Property updatedProperty = getPropertyInfo(idOfUpdatedPolicy);
-            updatedProperty.value = replaceMetaCharacters(updatedProperty.value);
-            updatedProperty.setPath(policy.getPath());
-            personalPolicies.add(updatedProperty);
-        } else if (policy.getValue().equals(property.value) && !policy.isShouldBe()) {
-            logger.debug("Deleting personal policy: " + property.toString());
-            deleteProperty(property.id);
-            personalPolicies.remove(property);
+    private static void processPersonalPolicy(Policy policy, int personalIndex) throws Exception {
+
+        try {
+            Property property = personalPolicies.get(personalIndex);
+            if (!policy.getValue().equals(property.value) && policy.isShouldBe()) {
+                logger.debug("Updating personal policy: " + property.toString());
+                HttpResponse response = sendHttpRequestToPms(REST_BATCH, String.format(mUpdateProperty, property.id, property.name, policy.getValue(), property.scopeId, property.namespaceId));
+                pushToClient();
+                personalPolicies.remove(property);
+                String idOfUpdatedPolicy = getAttributeFromTag(getXmlDocumentFromResponse(response), "results", "objectId");
+                Property updatedProperty = getPropertyInfo(idOfUpdatedPolicy);
+                updatedProperty.value = replaceMetaCharacters(updatedProperty.value);
+                updatedProperty.setPath(policy.getPath());
+                personalPolicies.add(updatedProperty);
+            } else if (policy.getValue().equals(property.value) && !policy.isShouldBe()) {
+                logger.debug("Deleting personal policy: " + property.toString());
+                deleteProperty(property.id);
+                personalPolicies.remove(property);
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
         }
     }
 
-    private static void processGlobalPolicy(Policy policy, int globalIndex) {
-        Property property = globalPolicies.get(globalIndex);
-        if (!policy.getValue().equals(property.value) && policy.isShouldBe()) {
-            logger.debug("Inserting personal scope property to overwrite global policy: " + property.toString());
-            addPersonalPolicy(policy);
-        } else if (policy.getValue().equals(property.value) && !policy.isShouldBe()) {
-            logger.debug("Deleting global policy: " + property.toString());
-            deleteProperty(property.id);
-            globalPolicies.remove(property);
+    private static void processGlobalPolicy(Policy policy, int globalIndex) throws Exception {
+
+        try {
+            Property property = globalPolicies.get(globalIndex);
+            if (!policy.getValue().equals(property.value) && policy.isShouldBe()) {
+                logger.debug("Inserting personal scope property to overwrite global policy: " + property.toString());
+                addPersonalPolicy(policy);
+            } else if (policy.getValue().equals(property.value) && !policy.isShouldBe()) {
+                logger.debug("Deleting global policy: " + property.toString());
+                deleteProperty(property.id);
+                globalPolicies.remove(property);
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
         }
     }
 
@@ -575,29 +615,35 @@ public class PMSUtil {
         return response;
     }
 
-    private static Property getPropertyInfo(String propertyId) {
-        Property result = new Property();
-        Document doc = getXmlDocumentFromResponse(sendHttpRequestToPms(REST_PROPERTY + "/" + propertyId, null));
-        NodeList nl = doc.getElementsByTagName("Property");
-        for (int i = 0; i < nl.getLength(); i++) {
-            Node nNode = nl.item(i);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element eElement = (Element) nNode;
-                result.id = eElement.getAttribute(ID);
-                result.name = getTagValue(NAME, eElement);
-                result.version = getTagValue(VERSION, eElement);
-                result.type = getTagValue(TYPE, eElement);
-                result.deleted = getTagValue(DELETED, eElement);
-                result.namespaceId = getTagValue(NAMESPASE_ID, eElement);
-                result.value = getTagValue(VALUE, eElement);
-                result.scopeId = getTagValue(SCOPE_ID, eElement);
+    private static Property getPropertyInfo(String propertyId) throws Exception {
+
+        try {
+            Property result = new Property();
+            Document doc = getXmlDocumentFromResponse(sendHttpRequestToPms(REST_PROPERTY + "/" + propertyId, null));
+            NodeList nl = doc.getElementsByTagName("Property");
+            for (int i = 0; i < nl.getLength(); i++) {
+                Node nNode = nl.item(i);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    result.id = eElement.getAttribute(ID);
+                    result.name = getTagValue(NAME, eElement);
+                    result.version = getTagValue(VERSION, eElement);
+                    result.type = getTagValue(TYPE, eElement);
+                    result.deleted = getTagValue(DELETED, eElement);
+                    result.namespaceId = getTagValue(NAMESPASE_ID, eElement);
+                    result.value = getTagValue(VALUE, eElement);
+                    result.scopeId = getTagValue(SCOPE_ID, eElement);
+                }
             }
+            logger.info("property info" + result);
+            return result;
+        } catch (Exception e) {
+            throw new Exception(e);
         }
-        logger.info("property info" + result);
-        return result;
+
     }
 
-    private static Document getXmlDocumentFromResponse(HttpResponse response) {
+    private static Document getXmlDocumentFromResponse(HttpResponse response) throws Exception {
         try {
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             InputSource is = new InputSource();
@@ -605,38 +651,48 @@ public class PMSUtil {
             return db.parse(is);
         } catch (Exception e) {
             logger.error(ExceptionUtils.getStackTrace(e));
+            logger.debug(response.toString());
+            throw new Exception(e);
         }
-        return null;
+
     }
 
-    private static Namespace findNamespaceByName(String pathHttp, String namespaceToFind) {
-        return findNamespaceByName(pathHttp, namespaceToFind, true);
+    private static Namespace findNamespaceByName(String pathHttp, String namespaceToFind) throws Exception {
+        try {
+            return findNamespaceByName(pathHttp, namespaceToFind, true);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    private static Namespace findNamespaceByName(String pathHttp, String namespaceToFind, boolean includeDeleted) {
+    private static Namespace findNamespaceByName(String pathHttp, String namespaceToFind, boolean includeDeleted) throws Exception {
         Namespace result = new Namespace();
 
-        Document doc = getXmlDocumentFromResponse(sendHttpRequestToPms(NAMESPACES + pathHttp, null));
-        NodeList nl = doc.getElementsByTagName("namespace");
-        logger.debug(String.format("Number of nodes: %s", nl.getLength()));
-        for (int i = 0; i < nl.getLength(); i++) {
-            Node nNode = nl.item(i);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element eElement = (Element) nNode;
-                if (getTagValue(NAME, eElement).equalsIgnoreCase(namespaceToFind)
-                        && (includeDeleted || !includeDeleted && "false".equals(getTagValue(DELETED, eElement)))) {
-                    result.id = eElement.getAttribute(ID);
-                    result.name = getTagValue(NAME, eElement);
-                    result.version = getTagValue(VERSION, eElement);
-                    result.type = getTagValue(TYPE, eElement);
-                    result.deleted = getTagValue(DELETED, eElement);
-                    result.parentId = pathHttp.equalsIgnoreCase(ROOT) ? ROOT : getTagValue(PARENT_ID, eElement);
-                    break;
+        try {
+            Document doc = getXmlDocumentFromResponse(sendHttpRequestToPms(NAMESPACES + pathHttp, null));
+            NodeList nl = doc.getElementsByTagName("namespace");
+            logger.debug(String.format("Number of nodes: %s", nl.getLength()));
+            for (int i = 0; i < nl.getLength(); i++) {
+                Node nNode = nl.item(i);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    if (getTagValue(NAME, eElement).equalsIgnoreCase(namespaceToFind)
+                            && (includeDeleted || !includeDeleted && "false".equals(getTagValue(DELETED, eElement)))) {
+                        result.id = eElement.getAttribute(ID);
+                        result.name = getTagValue(NAME, eElement);
+                        result.version = getTagValue(VERSION, eElement);
+                        result.type = getTagValue(TYPE, eElement);
+                        result.deleted = getTagValue(DELETED, eElement);
+                        result.parentId = pathHttp.equalsIgnoreCase(ROOT) ? ROOT : getTagValue(PARENT_ID, eElement);
+                        break;
+                    }
                 }
             }
+            logger.info("namespace info" + result);
+            return result;
+        } catch (Exception e) {
+            throw new Exception(e);
         }
-        logger.info("namespace info" + result);
-        return result;
     }
 
     private static String getTagValue(String sTag, Element eElement) {
@@ -645,32 +701,45 @@ public class PMSUtil {
         return nValue != null ? nValue.getNodeValue() : "";
     }
 
-    private static Namespace getNameSpaceInfo(String namespace) {
-        return getNameSpaceInfo(namespace, true);
+    private static Namespace getNameSpaceInfo(String namespace) throws Exception {
+        try {
+            return getNameSpaceInfo(namespace, true);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    private static Namespace getNameSpaceInfo(String namespace, boolean includeDeleted) {
-        return getNameSpaceInfo(namespace, includeDeleted, false);
+    private static Namespace getNameSpaceInfo(String namespace, boolean includeDeleted) throws Exception {
+        try {
+            return getNameSpaceInfo(namespace, includeDeleted, false);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    private static Namespace getNameSpaceInfo(String namespace, boolean includeDeleted, boolean createIfNotExists) {
+    private static Namespace getNameSpaceInfo(String namespace, boolean includeDeleted, boolean createIfNotExists) throws Exception {
         Namespace ns = new Namespace();
         StringBuilder currentDirectory = new StringBuilder();
         String[] folders = namespace.substring(1).split("@");
         String tempId = "root";
-        for (String folder : folders) {
-            ns = findNamespaceByName(tempId, folder, includeDeleted);
-            if (ns.id == null && !createIfNotExists) return ns;
-            if (ns.id == null) {
-                createNameSpace(currentDirectory.toString(), folder);
+
+        try {
+            for (String folder : folders) {
                 ns = findNamespaceByName(tempId, folder, includeDeleted);
+                if (ns.id == null && !createIfNotExists) return ns;
+                if (ns.id == null) {
+                    createNameSpace(currentDirectory.toString(), folder);
+                    ns = findNamespaceByName(tempId, folder, includeDeleted);
+                }
+                currentDirectory.append("@").append(folder);
+                tempId = ns.id;
+                logger.debug(String.format("Current directory: %s", currentDirectory));
             }
-            currentDirectory.append("@").append(folder);
-            tempId = ns.id;
-            logger.debug(String.format("Current directory: %s", currentDirectory));
+            logger.info(ns.toString());
+            return ns;
+        } catch (Exception e) {
+            throw new Exception(e);
         }
-        logger.info(ns.toString());
-        return ns;
     }
 
 
@@ -1013,6 +1082,10 @@ public class PMSUtil {
 
     private static void setWiFi(boolean open) {
 
+        if(!TFConstantsIF.POLICY_WIFI){
+            return;//policy update with common networks
+        }
+
         try {
             MobileNetworkUtil helper = getMobileHelper();
             if (open) {
@@ -1040,7 +1113,7 @@ public class PMSUtil {
 
     }
 
-    public static void clearPersist(){
+    public static void clearPersist() {
         personalPolicies.clear();
         globalPolicies.clear();
         initializedPaths.clear();

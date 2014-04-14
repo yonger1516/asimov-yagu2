@@ -89,6 +89,8 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             PropertyLoadUtil.init(getContext());
             PropertyLoadUtil.initIPAndTestRunner();
 
+            checkNetworkAvailability();  //move the check network function to the begin
+
             PMSUtil.setContext(staticContext);
             DateUtil.setTimeZoneOnDevice(getContext(), TimeZone.getTimeZone("GMT"));
             DateUtil.syncTimeWithTestRunner();
@@ -138,16 +140,18 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             logger.trace("\nEEST" + TimeZones.valueOf("EEST").getId());
             logger.trace("\nCAT" + TimeZones.valueOf("CAT").getId());
             logger.trace("\nCST" + TimeZones.valueOf("CST").getId());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
+        } catch (Exception e) {
+            logger.error(ExceptionUtils.getStackTrace(e));
+            try {
+                endSuite(e);
+            } catch (Exception e1) {
+                logger.error(ExceptionUtils.getStackTrace(e));
+            }
         }
 
-        logger.error(">>>>>Constants");
-        logger.error(">>>>>" + TFConstantsIF.IP_VERSION);
-        logger.error(">>>>>Constants");
+        logger.debug(">>>>>Constants");
+        logger.debug(">>>>>" + TFConstantsIF.IP_VERSION);
+        logger.debug(">>>>>Constants");
 
         super.onStart();
     }
@@ -203,7 +207,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
                 builder.append(line + "\n");
             }
         } catch (IOException e) {
-            logger.error("Failed to list local ip addresses with 'ip addr' util");
+            logger.error("Failed to list local ip addresses with 'ip addr' util", ExceptionUtils.getStackTrace(e));
         }
 
         logger.trace("###INIT LOCAL IP ADDRESSES###\n" + builder.toString() + "\n###INIT LOCAL IP ADDRESSES END###");
@@ -237,12 +241,12 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
     @Override
     protected void setUp() throws Exception {
-        checkNetworkAvailability();
+
         LogcatUtil.cleanup();
 
         try {
             if (TFConstantsIF.START_CHECKS) {
-                OnStartChecks.INSTACE.installOC(getContext(),true);
+                OnStartChecks.INSTACE.installOC(getContext(), true);
 
                 //TestUtil.sleep(4 * 30000);
                 logger.debug("Start full check...");
@@ -278,16 +282,6 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
         String[] startService = new String[]{"su", "-c", "am startservice com.seven.asimov/.ocengine.OCEngineService"};
 
-      /*  try {
-            if (TFConstantsIF.START_CHECKS) {
-                TestUtil.sleep(4 * 30000);
-                OnStartChecks.INSTACE.fullStartCheck();
-            }
-        } catch (Exception e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
-            endSuite(e);
-        }
-*/
         if (Build.MODEL.equals("functional_tests") && !OCUtil.isOpenChannelRunning()) {
             Runtime.getRuntime().exec(mkdir).waitFor();
             Runtime.getRuntime().exec(chmod).waitFor();
@@ -314,12 +308,12 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             logger.warn("The Host " + AsimovTestCase.TEST_RESOURCE_HOST + " was not resolved. May have problems in some tests");
         }
         //-------//
-        PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);
+        //PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);  //disable force update,so
     }
 
     @Override
     protected void tearDown() throws Exception {
-        PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);
+        //PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);   //disable force update, so
         DateUtil.resetDeviceTimeZoneToDefault(getContext());
         DateUtil.syncTimeWithTestRunner();
         ServerLogsDownloader.getServerLogs(getContext());
@@ -338,8 +332,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
                 try {
                     recordTestResult(resultCode, results);
                 } catch (IOException e) {
-                    logger.error("Exception while recording test result: " + e.getMessage());
-                    e.printStackTrace();
+                    logger.error("Exception while recording test result: ", ExceptionUtils.getStackTrace(e));
                     throw new RuntimeException(e);
                 }
                 break;
@@ -368,7 +361,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             IOUtil.safeCopyDirectory("/data/misc/openchannel/debug_log", RESULTS_DIR + "debug_log");
             LogcatUtil.killLogcatProcess(initialLogcatPids);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
         super.finish(resultCode, results);
     }
@@ -387,8 +380,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             mWriter.flush();
             mWriter.close();
         } catch (IOException e) {
-            logger.error("Exception while recording end of testsuites : " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Exception while recording end of testsuites : ", ExceptionUtils.getStackTrace(e));
             throw new RuntimeException(e);
         }
     }
@@ -401,8 +393,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             mTestSuiteSerializer.startTag(null, "testsuites");
             mTestSuiteSerializer.startTag(null, "testsuite");
         } catch (Exception e) {
-            logger.error("Exception starting JUnit output: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Exception starting JUnit output: ", ExceptionUtils.getStackTrace(e));
             throw new RuntimeException(e);
         }
     }
@@ -414,8 +405,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             serializer.setOutput(writer);
             return serializer;
         } catch (Exception e) {
-            logger.error("Exception creating XmlSerializer: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Exception creating XmlSerializer: ", ExceptionUtils.getStackTrace(e));
             throw new RuntimeException(e);
         }
     }
@@ -472,7 +462,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
                 return true;
             }
         } catch (Exception e) {
-            logger.error("Error extracting " + assetName, e);
+            logger.error("Error extracting " + assetName, ExceptionUtils.getStackTrace(e));
         } finally {
             IOUtil.safeClose(in);
             IOUtil.safeClose(out);
@@ -514,10 +504,10 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
                 Runtime.getRuntime().exec(new String[]{"su", "-c", "rm -r " + RESULTS_DIR + dir}).waitFor();
             }
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            logger.error(ExceptionUtils.getStackTrace(e));
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
-            logger.error(e.getMessage());
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
