@@ -5,6 +5,7 @@
     <entry key="oc_version">${oc_version}</entry>
     <entry key="ip_version">${ip_version}</entry>
     <entry key="start_checks">${start_checks}</entry>
+    <entry key="policy_wifi">true</entry>
 
     <entry key="emulator_name">functional_tests</entry>
     <entry key="rest.server.address">system.relay_host</entry>

@@ -219,5 +219,6 @@ public interface TFConstantsIF {
     public final static String LOGCAT_UTIL_DEBUG = PropertyLoadUtil.getProperty("logcat_util.debug");
 
     public boolean START_CHECKS = PropertyLoadUtil.getBooleanProperty("start_checks");
+    public boolean POLICY_WIFI = PropertyLoadUtil.getBooleanProperty("policy_wifi");
 
 }
