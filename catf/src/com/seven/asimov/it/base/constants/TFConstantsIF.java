@@ -221,4 +221,6 @@ public interface TFConstantsIF {
     public boolean START_CHECKS = PropertyLoadUtil.getBooleanProperty("start_checks");
     public boolean POLICY_WIFI = PropertyLoadUtil.getBooleanProperty("policy_wifi");
 
+    public final static String OC_PRIMARY_DIR=PropertyLoadUtil.getProperty("oc_primary_dir");
+
 }

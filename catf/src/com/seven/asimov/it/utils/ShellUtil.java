@@ -283,4 +283,17 @@ public final class ShellUtil {
             logger.error(ExceptionUtils.getStackTrace(e));
         }
     }
+
+    public static boolean grantRWRightToFile(String file) {
+        String cmd_chmod = "chmod 744 " + file;
+        List<String> list = new ArrayList<String>();
+        list.add(cmd_chmod);
+        String res=execWithCompleteResult(list, true);
+
+        if ("".equals(res)||null==res){
+            return true;
+        }
+
+        return false;
+    }
 }

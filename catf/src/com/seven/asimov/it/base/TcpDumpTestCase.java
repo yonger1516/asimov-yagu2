@@ -2,10 +2,8 @@ package com.seven.asimov.it.base;
 
 import android.util.Log;
 import com.seven.asimov.it.base.interfaces.HttpUrlConnectionIF;
-import com.seven.asimov.it.utils.MobileNetworkUtil;
 import com.seven.asimov.it.utils.TestUtil;
 import com.seven.asimov.it.utils.logcat.LogcatUtil;
-import com.seven.asimov.it.utils.pms.PMSUtil;
 import com.seven.asimov.it.utils.tcpdump.HttpSession;
 import com.seven.asimov.it.utils.tcpdump.Interface;
 import com.seven.asimov.it.utils.tcpdump.TcpDumpHelper;
@@ -834,13 +832,12 @@ public class TcpDumpTestCase extends AsimovTestCase implements HttpUrlConnection
         tcpDump = TcpDumpUtil.getInstance(getContext());
         tcpDump.start();
         testStartTimestamp = System.currentTimeMillis();
-        //logger.trace("testStartTimestamp=" + testStartTimestamp + "  " + new Date(testStartTimestamp).toString());
-        //super.setUp();
+        logger.trace("testStartTimestamp=" + testStartTimestamp + "  " + new Date(testStartTimestamp).toString());
 
         super.runTest();
         tcpDump.stop();
         testEndTimestamp = System.currentTimeMillis();
-        //logger.trace("testEndTimestamp=" + testEndTimestamp + "  " + new Date(testEndTimestamp).toString());
+        logger.trace("testEndTimestamp=" + testEndTimestamp + "  " + new Date(testEndTimestamp).toString());
         executeChecks();
     }
 

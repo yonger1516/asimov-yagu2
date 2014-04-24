@@ -1,7 +1,6 @@
 package com.seven.asimov.it.tests.caching.rfc.revalidation;
 
 import android.test.suitebuilder.annotation.LargeTest;
-import com.seven.asimov.it.annotation.Ignore;
 import com.seven.asimov.it.base.Base64;
 import com.seven.asimov.it.base.HttpHeaderField;
 import com.seven.asimov.it.base.HttpRequest;
@@ -19,7 +18,7 @@ import static com.seven.asimov.it.base.constants.TFConstantsIF.CRLF;
  * IGNORED due to OC version 2.4, where revalidation is not enabled. Should be un-ignored and checked in release 3.0
  * Logic of the test wasn't checked from release 2.3 because revalidation had switched off.
  */
-@Ignore
+
 public class RevalidationBlacklistTests extends CachingRevalidationTestCase {
 
     @LargeTest

@@ -19,8 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -70,11 +69,25 @@ public enum OnStartChecks {
     public void fullStartCheck() throws Exception {
         checkClientRegistrationWithServer();
         checkMSISDNvalidation();
-        checkFirstTimePolicyRetrieved();
+
+        checkSchemaVersion();
+        //checkFirstTimePolicyRetrieved();
         //  checkFirstFirewallPolicyRetrieved();
         checkOcAndDispathcersCrash();
         checkTestRunnerAvailable();
         checkTestPort();
+    }
+
+    private void checkSchemaVersion() throws IOException, InterruptedException {
+
+        String version=OCUtil.getSchemaVersion();
+
+        if (version.toString().equals("")){
+            logger.error("Can't get client schema version");
+        }else{
+            logger.debug("Client schema version :" + version.toString());
+        }
+
     }
 
     /**

@@ -267,12 +267,14 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
          * PMSUtil.getPmsServerIp() starts TFProperties loading TF constants.
          * TFProperties performs checks and throws exception if needed
          */
-        try {
+       /* try {
             logger.info("PMSUtil.getPmsServerIp() = " + PMSUtil.getPmsServerIp());
         } catch (Throwable tr) {
             logger.error(ExceptionUtils.getStackTrace(tr));
             endSuite(new Exception(tr));
-        }
+        }*/
+
+
         String[] mkdir = {"su", "-c", "mkdir /data/misc/openchannel"};
         String[] chmod = {"su", "-c", "chmod 777 /data/misc/openchannel"};
         String[] chmodIpTables = {"su", "-c", "chmod  777 " + TFConstantsIF.PATH};
@@ -493,7 +495,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             IpTablesUtil.bypassPort(8087, add);   //add passport on device by iptables tool immediately
             IpTablesUtil.bypassPort(8099, add);
         } else if (setUp) {
-            PMSUtil.addConfigurationBypassPorts(add); //push pms setting
+           // PMSUtil.addConfigurationBypassPorts(add); //push pms setting
         }
     }
 

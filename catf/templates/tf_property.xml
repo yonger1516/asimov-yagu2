@@ -50,6 +50,7 @@
     <entry key="ga_vendor">seven.com</entry>
 
     <entry key="tests_results_dir">/mnt/sdcard/OCIntegrationTestsResults/</entry>
+    <entry key="oc_primary_dir">/data/misc/openchannel</entry>
 
     <entry key="oc_package_name">com.seven.asimov</entry>
     <entry key="oc_process_name">com.seven.asimov</entry>

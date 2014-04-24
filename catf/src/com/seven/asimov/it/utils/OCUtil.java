@@ -320,4 +320,47 @@ public final class OCUtil {
         Assert.assertTrue("Engine wasn't restarted", asimovPID != null);
     }
 
+    public  static String getSchemaVersion() throws IOException, InterruptedException {
+        String cmd_version="su -c cat "+TFConstantsIF.OC_PRIMARY_DIR+"/config_schema.version";
+
+
+        logger.debug("Execute shell command: "+cmd_version);
+        final Process pVersion=Runtime.getRuntime().exec(cmd_version);
+        final StringBuffer version= new StringBuffer();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //To change body of implemented methods use File | Settings | File Templates.
+                BufferedReader br=null;
+                try{
+                    br=new BufferedReader(new InputStreamReader(pVersion.getInputStream()));
+                    String line="";
+
+                    while(null!=(line=br.readLine())){
+                        version.append(line);
+                    }
+                } catch (IOException e) {
+                    logger.error(ExceptionUtils.getFullStackTrace(e));
+                }finally {
+                    if (null!=br){
+                        try {
+                            br.close();
+                        } catch (IOException e) {
+                            logger.error(ExceptionUtils.getFullStackTrace(e));
+                        }
+                    }
+                }
+            }
+        }).start();
+
+        pVersion.waitFor();
+        pVersion.destroy();
+
+        return version.toString();
+    }
+
+
+
+
 }

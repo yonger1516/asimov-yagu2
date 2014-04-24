@@ -1,6 +1,5 @@
 package com.seven.asimov.it.tests.caching.rfc.revalidation;
 
-import com.seven.asimov.it.annotation.Ignore;
 import com.seven.asimov.it.base.Base64;
 import com.seven.asimov.it.base.HttpRequest;
 import com.seven.asimov.it.testcases.CachingRevalidationTestCase;
@@ -16,7 +15,7 @@ import static com.seven.asimov.it.base.constants.TFConstantsIF.CRLF;
  * IGNORED due to OC version 2.4, where revalidation is not enabled. Should be un-ignored and checked in release 3.0
  * Logic of the test wasn't checked from release 2.3 because revalidation had switched off.
  */
-@Ignore
+
 public class HttpsRfcProdutionTests extends CachingRevalidationTestCase {
 
     public void test_001_RevalidationExpiresHttps() throws Throwable {

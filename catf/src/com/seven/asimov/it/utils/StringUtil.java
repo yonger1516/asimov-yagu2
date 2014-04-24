@@ -500,5 +500,19 @@ public class StringUtil {
         }
         return startWith.compareToIgnoreCase(content.substring(0, startWith.length())) == 0;
     }
+
+    public static boolean isNumberOfString(String value) {
+        for (char ch : value.toCharArray()) {
+            if (ch >= 30 && ch <= 39) {
+
+            } else {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
 }
 
