@@ -1,7 +1,6 @@
 package com.seven.asimov.it.testcases;
 
 
-import android.util.Log;
 import com.seven.asimov.it.base.*;
 import com.seven.asimov.it.utils.PrepareResourceUtil;
 import com.seven.asimov.it.utils.ScreenUtils;
@@ -11,78 +10,56 @@ import com.seven.asimov.it.utils.logcat.tasks.pollingTasks.StartPollTask;
 import com.seven.asimov.it.utils.logcat.wrappers.StartPollWrapper;
 import com.seven.asimov.it.utils.pms.PMSUtil;
 import com.seven.asimov.it.utils.pms.Policy;
+import com.seven.asimov.it.utils.sa.SaRestUtil;
 import com.seven.asimov.it.utils.sms.SmsUtil;
+import com.seven.asimov.it.utils.sms.SmsUtil.InvalidationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 public class IWOCTestCase extends TcpDumpTestCase {
-    private static final String TAG = IWOCTestCase.class.getSimpleName();
-
-    private static final Logger logger= LoggerFactory.getLogger(IWOCTestCase.class);
-
-    private static final String AGGRESSIVENESS_REST_PROPERTY_PATH = "@asimov@http";
-    private static final String AGGRESSIVENESS_REST_PROPERTY_NAME_IWOC = "no_cache_invalidate_aggressiveness";
-    private static final int RADIO_KEEPER_DELAY_MS = 3 * 1000;
-    public static String VALID_RESPONSE = "tere";
-
-    public static final int RI_REQUEST_INTERVAL_MS_IWOC = 35 * 1000;
-    public static final int LP_REQUEST_INTERVAL_MS_IWOC = 75 * 1000;
-    private static final int LP_DELAY_MS_IWOC = 60 * 1000;
-    private static final int SMS_SEND_DELAY = 1000;
-
-
-
-    public static final int AGGRESSIVENESS_LEVEL_0 = 0;
-    public static final int AGGRESSIVENESS_LEVEL_1 = 1;
-    public static final int AGGRESSIVENESS_LEVEL_2 = 2;
-    public static final int AGGRESSIVENESS_LEVEL_3 = 3;
-    public static final int LP_REQUEST_INTERVAL_MS_LARGE = 100 * 1000;
-
-    public enum RadioState {
-        RADIO_UP, RADIO_DOWN
-    }
-
-    public enum ScreenState {
-        SCREEN_ON, SCREEN_OFF
-    }
+    private static final Logger logger= LoggerFactory.getLogger(IWOCTestCase.class.getSimpleName());
+    private static final String AGGRESSIVENESS_REST_PROPERTY_NAME_IWOC = "noCacheInvalidateAggressiveness";
 
     public void checkAggressiveIWOC(String resource, int aggressivenessLevel, ScreenState screenState,
                                     RadioState radioState, boolean isLongPolling, boolean invalidateReceived)
             throws Throwable {
 
 
-        if (aggressivenessLevel == 0) {
-            PMSUtil.cleanPaths(new String[]{AGGRESSIVENESS_REST_PROPERTY_PATH});
-        } else {
-            PMSUtil.addPoliciesWithCheck(new Policy[]{new Policy(AGGRESSIVENESS_REST_PROPERTY_NAME_IWOC, String.valueOf(aggressivenessLevel), AGGRESSIVENESS_REST_PROPERTY_PATH, true)});
-        }
-
-        ScreenUtils.ScreenSpyResult spy = ScreenUtils.switchScreenAndSpy(getContext(),
-                screenState == ScreenState.SCREEN_ON);
+        Policy policy=new Policy(AGGRESSIVENESS_REST_PROPERTY_NAME_IWOC, String.valueOf(aggressivenessLevel), AGGRESSIVENESS_REST_PROPERTY_PATH, true);
+        ScreenUtils.ScreenSpyResult spy = null;
 
         try {
+
+            SaRestUtil.updateParameter(policy);
+
+            logger.trace("setting screen spy...");
+            spy = ScreenUtils.switchScreenAndSpy(getContext(),
+                    screenState == ScreenState.SCREEN_ON);
+
             if (radioState == RadioState.RADIO_UP) {
                 TestCaseThread radioUpKeeperThread = createRadioUpKeeperThread();
                 if (isLongPolling) {
                     executeThreads(1000 * 1000, radioUpKeeperThread, createIWOCLongPollingThread(resource,
-                            LP_REQUEST_INTERVAL_MS_IWOC, invalidateReceived, radioUpKeeperThread));
+                            LP_REQUEST_INTERVAL_MS, invalidateReceived, radioUpKeeperThread));
                 } else {
                     executeThreads(radioUpKeeperThread,
-                            createIWOCRegularPollingThread(resource, RI_REQUEST_INTERVAL_MS_IWOC, invalidateReceived,
+                            createIWOCRegularPollingThread(resource, RI_REQUEST_INTERVAL_MS, invalidateReceived,
                                     radioUpKeeperThread));
                 }
             } else {
                 if (isLongPolling) {
                     executeThreads(1000 * 1000, createIWOCLongPollingThread(resource,
-                            LP_REQUEST_INTERVAL_MS_IWOC, invalidateReceived));
+                            LP_REQUEST_INTERVAL_MS, invalidateReceived));
                 } else {
-                    executeThreads(createIWOCRegularPollingThread(resource, RI_REQUEST_INTERVAL_MS_IWOC, invalidateReceived));
+                    executeThreads(createIWOCRegularPollingThread(resource, RI_REQUEST_INTERVAL_MS, invalidateReceived));
                 }
             }
         } finally {
-            ScreenUtils.finishScreenSpy(getContext(), spy);
+            if (null != spy) {
+                ScreenUtils.finishScreenSpy(getContext(), spy);
+            }
         }
     }
 
@@ -106,28 +83,22 @@ public class IWOCTestCase extends TcpDumpTestCase {
             public void run() throws Throwable {
                 try {
                     PrepareResourceUtil.prepareResource(uri, false);
-                    int requestId = 0;
-                    // (1) MISS
-                    HttpResponse response = checkMiss(request, ++requestId, VALID_RESPONSE);
-                    logSleeping(requestInterval - response.getDuration());
-                    // (2) MISS
-                    response = checkMiss(request, ++requestId, VALID_RESPONSE);
-                    logSleeping(requestInterval - response.getDuration());
-                    // (3) MISS
-                    response = checkMiss(request, ++requestId, VALID_RESPONSE);
-                    long preparationStart = System.currentTimeMillis();
-                    logSleeping((long) (requestInterval * 0.75));
+                    requestId = 0;
+
+                    HttpResponse response = checkMiss(request, ++requestId, VALID_RESPONSE, requestInterval); // (1) MISS
+                    response = checkMiss(request, ++requestId, VALID_RESPONSE, requestInterval);// (2) MISS
+                    response = checkMiss(request, ++requestId, VALID_RESPONSE, requestInterval);// (3) MISS
+
+                    // (4) HIT
+                    response = checkHit(request, ++requestId, VALID_RESPONSE);
+
                     logcatUtil.stop();
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-                   logger.info(TAG, "Start poll wrapper object" + startPoll);
-                    long preparationEnd = System.currentTimeMillis();
-                    long preparationDelay = preparationEnd - preparationStart;
-                    logSleeping(requestInterval - preparationDelay - response.getDuration());
-                    // (4) HIT
-                    response = checkHit(request, ++requestId, VALID_RESPONSE);
+                   logger.info("Start poll wrapper object" + startPoll);
+
                     logSleeping(requestInterval - SMS_SEND_DELAY - response.getDuration());
-                    (new SmsUtil(getContext())).sendInvalidationSms(Integer.parseInt(startPollTask.getLogEntries().get(0).getSubscriptionId()),(byte) 2);
+                    (new SmsUtil(getContext())).sendInvalidationSms(Integer.parseInt(startPoll.getSubscriptionId()), InvalidationType.INVALIDATE_WITHOUT_CACHE.byteVal);
                     logSleeping(SMS_SEND_DELAY);
                     if (invalidateReceived) {
                         checkMiss(request, ++requestId);
@@ -162,7 +133,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
             @Override
             public void run() throws Throwable {
                 try {
-                    PrepareResourceUtil.prepareResourceWithDelay(uri, LP_DELAY_MS_IWOC / 1000);
+                    PrepareResourceUtil.prepareResourceWithDelay(uri, LP_DELAY_MS / 1000);
                     int requestId = 0;
                     // (1) MISS
                     HttpResponse response = checkMiss(request, ++requestId, VALID_RESPONSE);
@@ -174,7 +145,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
                     logcatUtil.stop();
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-                    logger.info(TAG, "Start poll wrapper object" + startPoll);
+                    logger.info("Start poll wrapper object" + startPoll);
                     long preparationEnd = System.currentTimeMillis();
                     long preparationDelay = preparationEnd - preparationStart;
                     logSleeping(requestInterval - preparationDelay - response.getDuration());
@@ -236,7 +207,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
         String uri = createUri();
         request.setUri(uri);
         PrepareResourceUtil.prepareResource(uri, false);
-        if (!isOrdinaryPoll) setResourceDelay(request, LP_DELAY_MS_IWOC / 1000);
+        if (!isOrdinaryPoll) setResourceDelay(request, LP_DELAY_MS / 1000);
         LogcatUtil logcatUtil = new LogcatUtil(getContext(), startPollTask);
         logcatUtil.start();
         HttpResponse response;
@@ -254,7 +225,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
             logcatUtil.stop();
             assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
             StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-            logger.info(TAG, "Start poll wrapper object" + startPoll);
+            logger.info("Start poll wrapper object" + startPoll);
             long preparationEnd = System.currentTimeMillis();
             long preparationDelay = preparationEnd - preparationStart;
             logSleeping((int) (requestInterval * 0.25) - preparationDelay - response.getDuration());
@@ -264,7 +235,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
             (new SmsUtil(getContext())).sendInvalidationSms(Integer.parseInt(startPollTask.getLogEntries().get(0).getSubscriptionId()),(byte) 2);
             if (invResponseEnabled) PrepareResourceUtil.prepareResource(request.getUri(), true);
             logSleeping(SMS_SEND_DELAY);
-            if (isIntervalChanged) requestInterval = LP_REQUEST_INTERVAL_MS_IWOC;
+            if (isIntervalChanged) requestInterval = LP_REQUEST_INTERVAL_MS;
             checkMiss(request, ++requestId);
             logSleeping(requestInterval - response.getDuration());
             checkHit(request, ++requestId);
@@ -278,7 +249,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                logger.info(TAG, "Setting response delay to " + delaySeconds + " sec");
+                logger.info("Setting response delay to " + delaySeconds + " sec");
                 HttpRequest modificationRequest = request.copy();
                 modificationRequest.addHeaderField(new HttpHeaderField("X-OC-Stateless-Sleep", "true"));
                 modificationRequest.addHeaderField(new HttpHeaderField("X-OC-ChangeSleep", Integer.toString(delaySeconds)));

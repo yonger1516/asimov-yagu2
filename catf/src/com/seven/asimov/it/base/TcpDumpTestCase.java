@@ -38,36 +38,32 @@ import static com.seven.asimov.it.base.constants.TFConstantsIF.*;
 
 public class TcpDumpTestCase extends AsimovTestCase implements HttpUrlConnectionIF {
     private static final String TAG = TcpDumpTestCase.class.getSimpleName();
-
     private static final Logger logger = LoggerFactory.getLogger(TcpDumpTestCase.class.getSimpleName());
-
-    protected javax.net.ssl.SSLSocketFactory sslSocketFactory;
-
-    protected List<Check> checks = new ArrayList<Check>();
-
-    protected TcpDumpUtil tcpDump;
-
-    protected long testStartTimestamp = 0;
-    protected long testEndTimestamp = 0;
-    protected static String VALID_RESPONSE = "tere";
-    protected static String INVALIDATED_RESPONSE = "eret";
-    public static final long MIN_NON_RMP_PERIOD = 67000;
-    public static final long RMP_EXPIRATION_TIME = 2 * 60 * 1000;
-    public static final long MIN_RMP_PERIOD = 5000;
-
-    private static final String HTTPS_URI_SCHEME = "https://";
 
     protected int Z7TP_SESSION_COUNT = 0;
     protected int HTTP_SESSION_COUNT = 0;
-    protected int requestId = 0;
 
-    private int[] intervals;
-    private int[] delays;
-    private int[] timeouts;
-    private boolean[] changedBody;
-    private String[] expectedResults;
-    private LogcatUtil logcatUtil;
-    private final long THREADS_TIMEOUT = 30000l;
+    public static final long MIN_NON_RMP_PERIOD = 67000;
+    public static final long RMP_EXPIRATION_TIME = 2 * 60 * 1000;
+    public static final long MIN_RMP_PERIOD = 5000;
+    public static final int SMS_SEND_DELAY = 1000;
+    public static final int RI_REQUEST_INTERVAL_MS = (int) MIN_NON_RMP_PERIOD;
+    public static final int LP_REQUEST_INTERVAL_MS = 100 * 1000;
+    public static final int LP_DELAY_MS = 70 * 1000;
+    public static final int RADIO_KEEPER_DELAY_MS = 3 * 1000;
+    public static final int DORMANCY_TIMEOUT_SEC = 15;
+
+    public static final int AGGRESSIVENESS_LEVEL_0 = 0;
+    public static final int AGGRESSIVENESS_LEVEL_1 = 1;
+    public static final int AGGRESSIVENESS_LEVEL_2 = 2;
+    public static final int AGGRESSIVENESS_LEVEL_3 = 3;
+
+    protected int requestId = 0;
+    protected long testStartTimestamp = 0;
+    protected long testEndTimestamp = 0;
+
+    public static final String AGGRESSIVENESS_REST_PROPERTY_PATH = "optimization@http";
+    private static final String HTTPS_URI_SCHEME = URI_SCHEME_HTTPS;
 
     //Constants for expected results
     protected static final String MISS = "MISS";
@@ -77,6 +73,28 @@ public class TcpDumpTestCase extends AsimovTestCase implements HttpUrlConnection
     protected static final String IWC = "IWC";
     protected static final String IWoC = "IWoC";
     protected static final String NEW_RESPONSE_BODY = "eret";
+    protected static String VALID_RESPONSE = "tere";
+    protected static String INVALIDATED_RESPONSE =NEW_RESPONSE_BODY;
+
+    private int[] intervals;
+    private int[] delays;
+    private int[] timeouts;
+    private boolean[] changedBody;
+    private String[] expectedResults;
+    private LogcatUtil logcatUtil;
+    private final long THREADS_TIMEOUT = 30000l;
+
+    protected TcpDumpUtil tcpDump;
+    protected javax.net.ssl.SSLSocketFactory sslSocketFactory;
+    protected List<Check> checks = new ArrayList<Check>();
+
+    public enum RadioState {
+        RADIO_UP, RADIO_DOWN
+    }
+
+    public enum ScreenState {
+        SCREEN_ON, SCREEN_OFF
+    }
 
     protected int getZ7TpSessionCount() {
         //logger.trace("testStartTimestamp=" + testStartTimestamp + "   " + new Date(testStartTimestamp).toString());

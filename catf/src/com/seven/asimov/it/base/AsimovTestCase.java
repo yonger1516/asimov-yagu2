@@ -65,8 +65,8 @@ public class AsimovTestCase extends AndroidTestCase {
 
     private static String testResourcePathStart = "";
     public static String TEST_RESOURCE_HOST = "tln-dev-testrunner1.7sys.eu";
-    private static String URI_SCHEME_HTTP = "http://";
-    private static String URI_SCHEME_HTTPS = "https://";
+    protected static String URI_SCHEME_HTTP = "http://";
+    protected static String URI_SCHEME_HTTPS = "https://";
     protected static String TEST_RESOURCE_OWNER = "asimov_it";
 
     protected static Map<String, Long> lastRequestTime = new HashMap<String, Long>();

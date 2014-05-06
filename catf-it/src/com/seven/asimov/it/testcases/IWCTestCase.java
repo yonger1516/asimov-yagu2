@@ -17,32 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class IWCTestCase extends TcpDumpTestCase {
-    private static final Logger logger= LoggerFactory.getLogger(IWOCTestCase.class);
-    //private static final String TAG = IWCTestCase.class.getSimpleName();
-
-    public static final int AGGRESSIVENESS_LEVEL_0 = 0;
-    public static final int AGGRESSIVENESS_LEVEL_1 = 1;
-    public static final int AGGRESSIVENESS_LEVEL_2 = 2;
-    public static final int AGGRESSIVENESS_LEVEL_3 = 3;
-
-    public static final long MIN_NON_RMP_PERIOD = 67000;
-    private static final int RI_REQUEST_INTERVAL_MS = (int) MIN_NON_RMP_PERIOD;
-    private static final int LP_REQUEST_INTERVAL_MS = 100 * 1000;
-    private static final int LP_DELAY_MS = 70 * 1000;
-    private static final int RADIO_KEEPER_DELAY_MS = 3 * 1000;
-    private static final int DORMANCY_TIMEOUT_SEC = 15;
-
-    private static final String AGGRESSIVENESS_REST_PROPERTY_PATH = "optimization@http";
+    private static final Logger logger= LoggerFactory.getLogger(IWOCTestCase.class.getSimpleName());
     private static final String AGGRESSIVENESS_REST_PROPERTY_NAME = "cacheInvalidateAggressiveness";
-    public static String VALID_RESPONSE = "tere";
 
-    public enum RadioState {
-        RADIO_UP, RADIO_DOWN
-    }
-
-    public enum ScreenState {
-        SCREEN_ON, SCREEN_OFF
-    }
 
     protected void checkAggressiveIWC(String resource, int aggressivenessLevel, ScreenState screenState,
                                       RadioState radioState, boolean isLongPolling, boolean invalidateReceived)
@@ -132,10 +109,12 @@ public class IWCTestCase extends TcpDumpTestCase {
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
                     logger.info( "Start poll wrapper object" + startPoll);
+
+
                     PrepareResourceUtil.prepareResourceWithDelayedChange(uri, DORMANCY_TIMEOUT_SEC);
                     long preparationEnd = System.currentTimeMillis();
                     long preparationDelay = preparationEnd - preparationStart;
-                    logSleeping(requestInterval - preparationDelay - response.getDuration() - 10 * 1000);
+                    logSleeping(requestInterval - preparationDelay - response.getDuration() - SMS_SEND_DELAY);
                     (new SmsUtil(getContext())).sendInvalidationSms(Integer.parseInt(startPoll.getSubscriptionId()), SmsUtil.InvalidationType.INVALIDATE_WITH_CACHE.byteVal);
                     logSleeping(10 * 1000);
                     if (invalidateReceived) {
