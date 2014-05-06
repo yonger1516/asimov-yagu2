@@ -91,7 +91,6 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
             checkNetworkAvailability();  //move the check network function to the begin
 
-            PMSUtil.setContext(staticContext);
             DateUtil.setTimeZoneOnDevice(getContext(), TimeZone.getTimeZone("GMT"));
             DateUtil.syncTimeWithTestRunner();
             mFilesDir = getTargetContext().getFilesDir().getAbsolutePath();
@@ -246,7 +245,9 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
         try {
             if (TFConstantsIF.START_CHECKS) {
-                OnStartChecks.INSTACE.installOC(getContext(), true);
+
+                logger.debug("start check is true");
+                OnStartChecks.INSTACE.installOC(getContext());
 
                 //TestUtil.sleep(4 * 30000);
                 logger.debug("Start full check...");
@@ -257,50 +258,22 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
             endSuite(e);
         }
 
-        updateIpTables(true, true);
+        updateIpTablesLocal(true);
 
-//        OpenChannelHelper.setCurrentClientType(OpenChannelHelper.ClientType.GA);
         logger.info("Current device is: " + Build.MODEL);
         logger.info("Current SDK is: " + Build.VERSION.SDK_INT);
 
         /*
-         * PMSUtil.getPmsServerIp() starts TFProperties loading TF constants.
+         * Rest server address starts TFProperties loading TF constants.
          * TFProperties performs checks and throws exception if needed
          */
-       /* try {
-            logger.info("PMSUtil.getPmsServerIp() = " + PMSUtil.getPmsServerIp());
+        try {
+            logger.info("Rest server address = " + TFConstantsIF.REST_SERVER_ADDRESS);
         } catch (Throwable tr) {
             logger.error(ExceptionUtils.getStackTrace(tr));
             endSuite(new Exception(tr));
-        }*/
-
-
-        String[] mkdir = {"su", "-c", "mkdir /data/misc/openchannel"};
-        String[] chmod = {"su", "-c", "chmod 777 /data/misc/openchannel"};
-        String[] chmodIpTables = {"su", "-c", "chmod  777 " + TFConstantsIF.PATH};
-        String install = "am broadcast -a android.intent.action.OC_ENGINE_INSTALL";
-        String[] dispatchers = {"su", "-c", "/data/misc/openchannel/ocd &"};
-        String run = "am broadcast -a android.intent.action.OC_ENGINE";
-
-        String[] startService = new String[]{"su", "-c", "am startservice com.seven.asimov/.ocengine.OCEngineService"};
-
-        if (Build.MODEL.equals("functional_tests") && !OCUtil.isOpenChannelRunning()) {
-            Runtime.getRuntime().exec(mkdir).waitFor();
-            Runtime.getRuntime().exec(chmod).waitFor();
-            Runtime.getRuntime().exec(chmodIpTables).waitFor();
-            Runtime.getRuntime().exec(install).waitFor();
-            logger.debug("asimov ocengine installed");
-            TestUtil.sleep(20000);
-            Runtime.getRuntime().exec(dispatchers).waitFor();
-            logger.debug("oc dispatchers started");
-            TestUtil.sleep(25000);
-            Runtime.getRuntime().exec(run).waitFor();
-            logger.debug("asimov ocengine started");
-            TestUtil.sleep(60000);
-        } else {
-            Runtime.getRuntime().exec(startService).waitFor();
-            TestUtil.sleep(60000);
         }
+
         //-------//
         //Resolve host for fix problem:
         //[https_task.cpp:70] (-14) - FC [...]: failed to back-resolve IP ..., will bypass connection
@@ -309,18 +282,15 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
         } catch (Exception e) {
             logger.warn("The Host " + AsimovTestCase.TEST_RESOURCE_HOST + " was not resolved. May have problems in some tests");
         }
-        //-------//
-        //PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);  //disable force update,so
+
     }
 
     @Override
     protected void tearDown() throws Exception {
-        //PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);   //disable force update, so
         DateUtil.resetDeviceTimeZoneToDefault(getContext());
         DateUtil.syncTimeWithTestRunner();
         ServerLogsDownloader.getServerLogs(getContext());
-//        String[] killoc = { "su", "-c", "killall occ" };
-//        Runtime.getRuntime().exec(killoc).waitFor();
+
         TestUtil.sleep(15 * 1000);
     }
 
@@ -492,11 +462,16 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
     private static void updateIpTables(boolean add, boolean setUp) throws Exception {
         if (TFConstantsIF.TPROXY == 0) {
-            IpTablesUtil.bypassPort(8087, add);   //add passport on device by iptables tool immediately
+            IpTablesUtil.bypassPort(8080, add);   //add passport on device by iptables tool immediately
             IpTablesUtil.bypassPort(8099, add);
         } else if (setUp) {
-           // PMSUtil.addConfigurationBypassPorts(add); //push pms setting
+            PMSUtil.addConfigurationBypassPorts(add); //push pms setting
         }
+    }
+
+    private static void updateIpTablesLocal(boolean add) throws IOException, InterruptedException {
+        IpTablesUtil.bypassPort(TFConstantsIF.REST_SERVER_PORT, add);
+        IpTablesUtil.bypassPort(TFConstantsIF.TESTRUNNER_PORT, add);
     }
 
     private void clearResultDirs() {

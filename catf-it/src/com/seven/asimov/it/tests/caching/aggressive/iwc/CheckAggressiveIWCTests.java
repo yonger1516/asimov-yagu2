@@ -3,6 +3,9 @@ package com.seven.asimov.it.tests.caching.aggressive.iwc;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.seven.asimov.it.annotation.DeviceOnly;
 import com.seven.asimov.it.testcases.IWCTestCase;
+import com.seven.asimov.it.utils.sa.SaRestUtil;
+import org.junit.After;
+import org.junit.Before;
 
 @DeviceOnly
 public class CheckAggressiveIWCTests extends IWCTestCase {
@@ -47,6 +50,16 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
     private static final String IWC_3_LP_SCREEN_ON_RADIO_DOWN = "iwc_3_lp_screen_on_radio_down";
     private static final String IWC_3_LP_SCREEN_ON_RADIO_UP = "iwc_3_lp_screen_on_radio_up";
 
+
+    @Before
+    public void setUp() throws Exception {
+        SaRestUtil.init();
+    }
+
+    @After
+    public void tearDown(){
+        SaRestUtil.close();
+    }
 
     /**
      * <p>For RI after receiving INVALIDATED_W_CACHE OC should immediately retrieved cache data in such cases:

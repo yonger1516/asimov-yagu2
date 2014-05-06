@@ -9,6 +9,9 @@ import com.seven.asimov.it.base.AsimovTestCase;
 import com.seven.asimov.it.base.HttpRequest;
 import com.seven.asimov.it.base.HttpResponse;
 import com.seven.asimov.it.base.constants.TFConstantsIF;
+import com.seven.asimov.it.utils.pms.z7.IntArrayMap;
+import com.seven.asimov.it.utils.pms.z7.Marshaller;
+import com.seven.asimov.it.utils.pms.z7.Z7TransportAddress;
 import com.seven.asimov.it.utils.tcpdump.HttpSession;
 import com.seven.asimov.it.utils.tcpdump.TcpDumpUtil;
 import junit.framework.Assert;
@@ -16,10 +19,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public final class OCUtil {
@@ -31,6 +31,7 @@ public final class OCUtil {
     private static final String htmlReportTargetDir = IntegrationTestRunnerGa.RESULTS_DIR + "res";
     private static final String ocCachingResourceDir = "/data/misc/openchannel/httpcache";
     private static final Logger logger = LoggerFactory.getLogger(OCUtil.class.getSimpleName());
+    private static String z7TpAddress;
 
     public static List<String> getGaProcessNamesArr() {
         return processNames;
@@ -360,6 +361,39 @@ public final class OCUtil {
         return version.toString();
     }
 
+
+    public static String getDeviceZ7TpAddress() throws IOException {
+        if (z7TpAddress != null) return z7TpAddress;
+
+        final String transportSettingsFilePath = "/mnt/sdcard/z7tpts";
+        try {
+            String[] cmd = new String[]{
+                    "cat", "/data/data/com.seven.asimov/transport_settings/*", ">", transportSettingsFilePath
+            };
+            ShellUtil.execWithCompleteResult(Arrays.asList(cmd), true);
+            InputStream inStream = new ObjectInputStream(new FileInputStream(transportSettingsFilePath));
+            IntArrayMap policySource = (IntArrayMap) Marshaller.decode(inStream);
+            for (int i = 0; i < policySource.size(); i++) {
+                Object obj = policySource.get(i);
+                if (obj instanceof Z7TransportAddress) {
+                    Z7TransportAddress address = (Z7TransportAddress) obj;
+                    logger.info("7TP address found: " + address.toString());
+                   z7TpAddress = address.toString();
+                    //z7TpAddress = "0x" + addressString.substring(addressString.indexOf("-") + 1, addressString.lastIndexOf("-"));
+                }
+            }
+            return z7TpAddress;
+        } catch (FileNotFoundException e) {
+            throw new junit.framework.AssertionFailedError("File transport_settings not found. Please verify that OC installed and worked.");
+        } catch (EOFException e) {
+            throw new junit.framework.AssertionFailedError("File transport_settings not found. Please verify that OC installed and worked.");
+        } finally {
+            String[] cmd = new String[]{
+                    "rm", transportSettingsFilePath
+            };
+            ShellUtil.execWithCompleteResult(Arrays.asList(cmd), true);
+        }
+    }
 
 
 

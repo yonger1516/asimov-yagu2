@@ -1,6 +1,6 @@
-package com.seven.asimov.it.rest.cms;
+package com.seven.asimov.it.rest.resource.cms;
 
-import com.seven.asimov.it.model.cms.ConfigurationNode;
+import com.seven.asimov.it.rest.model.ConfigurationNode;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 

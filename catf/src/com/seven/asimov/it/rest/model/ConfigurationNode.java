@@ -1,4 +1,4 @@
-package com.seven.asimov.it.model.cms;
+package com.seven.asimov.it.rest.model;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;

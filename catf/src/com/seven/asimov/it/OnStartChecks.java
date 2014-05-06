@@ -2,7 +2,6 @@ package com.seven.asimov.it;
 
 import android.content.Context;
 import android.os.Build;
-import android.test.AssertionFailedError;
 import com.seven.asimov.it.base.AsimovTestCase;
 import com.seven.asimov.it.base.HttpRequest;
 import com.seven.asimov.it.base.HttpResponse;
@@ -11,15 +10,20 @@ import com.seven.asimov.it.utils.OCUtil;
 import com.seven.asimov.it.utils.SmokeUtil;
 import com.seven.asimov.it.utils.TestUtil;
 import com.seven.asimov.it.utils.logcat.LogcatUtil;
-import com.seven.asimov.it.utils.logcat.tasks.*;
+import com.seven.asimov.it.utils.logcat.tasks.ClientRegistrationWithServerTask;
+import com.seven.asimov.it.utils.logcat.tasks.MsisdnTask;
+import com.seven.asimov.it.utils.logcat.tasks.OCInitializationTask;
+import com.seven.asimov.it.utils.logcat.tasks.StartingFirewallTask;
+import com.seven.asimov.it.utils.logcat.tasks.saTasks.SAUpdateReceivedTask;
 import com.seven.asimov.it.utils.logcat.wrappers.MsisdnWrapper;
-import com.seven.asimov.it.utils.logcat.wrappers.ResponseFirewallPolicyReceivedWrapper;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ import static com.seven.asimov.it.base.AsimovTestCase.*;
  * {@link com.seven.asimov.it.OnStartChecks#checkTestPort}
  * {@link com.seven.asimov.it.OnStartChecks#checkClientRegistrationWithServer}
  * {@link com.seven.asimov.it.OnStartChecks#checkMSISDNvalidation}
- * {@link com.seven.asimov.it.OnStartChecks#checkFirstTimePolicyRetrieved}
+ * {@link com.seven.asimov.it.OnStartChecks#checkFirstTimeSAUpdateReceived}
  * <p/>
  * <b>These checks are called {@link IntegrationTestRunnerGa} by:</b>
  * {@link com.seven.asimov.it.OnStartChecks#fullStartCheck}
@@ -46,18 +50,16 @@ public enum OnStartChecks {
 
     private static final Logger logger = LoggerFactory.getLogger(OnStartChecks.class.getSimpleName());
     private static final long POLICY_STORAGE_VERSION = -1L;
+    private static final int OC_INSTALL_TIME = 7 * 60 * 1000;
     private static final String OC_APK_FILENAME = "/sdcard/asimov-signed.apk";
-    private LogcatUtil logcatUtil;
+
     private static MsisdnTask msisdnTask = new MsisdnTask();
     private static OCInitializationTask ocInitializationTask = new OCInitializationTask();
-    private static FirstTimePoliciesRetrievalTask policiesRetrievalTask = new FirstTimePoliciesRetrievalTask();
+    private static SAUpdateReceivedTask saUpdateReceivedTask = new SAUpdateReceivedTask();
     private static ClientRegistrationWithServerTask clientRegistrationWithServerTask = new ClientRegistrationWithServerTask();
-    private static FirewallPolicyMgmtDataRequestTask firewallPolicyMgmtDataRequestTask = new FirewallPolicyMgmtDataRequestTask();
-    private static FirewallPolicyMgmtDataResponseTask firewallPolicyMgmtDataResponseTask = new FirewallPolicyMgmtDataResponseTask();
-    private static ResponseFirewallPolicyReceivedTask responseFirewallPolicyReceivedTask = new ResponseFirewallPolicyReceivedTask();
     private static StartingFirewallTask startingFirewallTask = new StartingFirewallTask();
-    private static final int OC_INSTALL_TIME = 7 * 60 * 1000;
 
+    private LogcatUtil logcatUtil;
     private static volatile boolean runThread;
     private static Thread radioKeep;
 
@@ -71,20 +73,26 @@ public enum OnStartChecks {
         checkMSISDNvalidation();
 
         checkSchemaVersion();
-        //checkFirstTimePolicyRetrieved();
-        //  checkFirstFirewallPolicyRetrieved();
+        checkFirstTimeSAUpdateReceived();
         checkOcAndDispathcersCrash();
         checkTestRunnerAvailable();
         checkTestPort();
     }
 
+    private void checkFirstTimeSAUpdateReceived() throws Exception {
+        if (saUpdateReceivedTask.getLogEntries().size() == 0) {
+            throw new Exception("First time policy retrieval not success.");
+        }
+
+    }
+
     private void checkSchemaVersion() throws IOException, InterruptedException {
 
-        String version=OCUtil.getSchemaVersion();
+        String version = OCUtil.getSchemaVersion();
 
-        if (version.toString().equals("")){
+        if (version.toString().equals("")) {
             logger.error("Can't get client schema version");
-        }else{
+        } else {
             logger.debug("Client schema version :" + version.toString());
         }
 
@@ -211,104 +219,22 @@ public enum OnStartChecks {
         }
     }
 
-    /**
-     * <h1>FirstPolicyRetrieved</h1>
-     * <p>The test checks that after success MSISDN validation OC Client send request for policy update and getting them</p>
-     * <p>The test is implemented as follows:</p>
-     * <ol>
-     * <li>Parsing logs about package manager initialization.</li>
-     * <li>Parsing logs about storage policy version.</li>
-     * <li>Parsing logs about diffie-Hellman request sending.</li>
-     * <li>Parsing logs about diffie-Hellman response.</li>
-     * <li>Parsing logs about policy MGMT data request sending.</li>
-     * <li>Parsing logs about local and server policies versions.</li>
-     * <li>Parsing logs about policy MGMT data response.</li>
-     * <li>Check endpoint (z7TP address) and that local policy tree hash</li>
-     * </ol>
-     *
-     * @throws Exception
-     */
-    private void checkFirstTimePolicyRetrieved() throws Exception {
-        if (policiesRetrievalTask.getLogEntries().size() == 0) {
-            throw new Exception("First time policy retrieval not success.");
-        } else {
-            logger.info(policiesRetrievalTask.getLogEntries().get(0).toString());
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[3] == 0L) {
-                throw new AssertionFailedError("Diffie-Hellman request sending should be reported in client log");
-            }
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[4] == 0L) {
-                throw new AssertionFailedError("Diffie-Hellman response sending should be reported in client log");
-            }
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[1] == 0L) {
-                throw new AssertionFailedError("Package manager initialization should be reported in client log");
-            }
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[2] == 0L) {
-                throw new AssertionFailedError("Storage policy version should be reported in client log");
-            }
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[5] == 0L) {
-                throw new AssertionFailedError("Policy MGMT data request sending should be reported in client log");
-            }
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[7] == 0L) {
-                throw new AssertionFailedError("Policy MGMT data response should be reported in client log");
-            }
-            if (policiesRetrievalTask.getLogEntries().get(0).getTimestamps()[6] == 0L) {
-                throw new AssertionFailedError("Local and server policies versions should be reported in client log");
-            }
-        }
-    }
-
-    /**
-     * <h1>FirstFirewallPolicyRetrieved</h1>
-     * <p>The test checks that after success MSISDN validation OC Client send request for firewall policy update and getting them</p>
-     * <p>The test is implemented as follows:</p>
-     * <ol>
-     * <li>Parsing logs about Sending a firewall policy mgmt data request.</li>
-     * <li>Parsing logs about Received a firewall policy mgmt server response.</li>
-     * <li>Parsing logs about Response 'firewall policy' received, error and status code states.</li>
-     * <li>Parsing logs about Starting Firewall.</li>
-     * </ol>
-     *
-     * @throws Exception
-     */
-
-    private void checkFirstFirewallPolicyRetrieved() throws Exception {
-        if (firewallPolicyMgmtDataRequestTask.getLogEntries().size() == 0)
-            throw new AssertionFailedError("Firewall policy mgmt data request was not sent to server");
-        if (firewallPolicyMgmtDataResponseTask.getLogEntries().size() == 0)
-            throw new AssertionFailedError("Firewall policy mgmt data response was not received from server");
-        if (!responseFirewallPolicyReceivedTask.getLogEntries().isEmpty()) {
-            for (ResponseFirewallPolicyReceivedWrapper wrapper : responseFirewallPolicyReceivedTask.getLogEntries()) {
-                if (!wrapper.getErrorCode().equals("0"))
-                    logger.warn("One of firewall policies response was with error");
-            }
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        if (startingFirewallTask.getLogEntries().size() == 0) {
-            if (!responseFirewallPolicyReceivedTask.getLogEntries().isEmpty()) {
-                stringBuilder.append("During test there was a firewall responses with errors: ");
-                for (ResponseFirewallPolicyReceivedWrapper wrapper : responseFirewallPolicyReceivedTask.getLogEntries()) {
-                    stringBuilder.append(wrapper.toString()).append("\n");
-                }
-            }
-            throw new AssertionFailedError("Firewall did not started " + stringBuilder.toString());
-        }
-    }
 
     /**
      * Method which install OC from sdcard, and write logcat
      *
      * @throws Exception
      */
-    public void installOC(final Context context, boolean check) throws Exception {
+    public void installOC(final Context context) throws Exception {
         try {
             String[] uninstallOc = {"su", "-c", "pm uninstall com.seven.asimov"};
             String[] installOc = {"su", "-c", "pm install -r " + OC_APK_FILENAME};
             String[] killAllOcc = {"su", "-c", "killall -9 occ"};
             String[] startService = new String[]{"su", "-c", "am startservice com.seven.asimov/.ocengine.OCEngineService"};
             Runtime.getRuntime().exec(uninstallOc).waitFor();
-//            Runtime.getRuntime().exec(killAllOcc).waitFor();
             TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-            logcatUtil = new LogcatUtil(context, msisdnTask, ocInitializationTask, policiesRetrievalTask, clientRegistrationWithServerTask, firewallPolicyMgmtDataRequestTask, firewallPolicyMgmtDataResponseTask, responseFirewallPolicyReceivedTask, startingFirewallTask);
+
+            logcatUtil = new LogcatUtil(context, clientRegistrationWithServerTask, msisdnTask, saUpdateReceivedTask, startingFirewallTask);
             logcatUtil.start();
             logger.info("Logcat Util has started sinse " + new Date() + " Current device is: " + Build.MODEL + " Current SDK is: " + Build.VERSION.SDK_INT);
             File file = new File(OC_APK_FILENAME);
@@ -322,10 +248,7 @@ public enum OnStartChecks {
             logger.debug("Sending intent for start OC Engine");
             Runtime.getRuntime().exec(startService).waitFor();
 
-            if (check) {
-                Thread.sleep(OC_INSTALL_TIME);
-            }
-
+            Thread.sleep(OC_INSTALL_TIME);
 
         } finally {
             logcatUtil.stop();

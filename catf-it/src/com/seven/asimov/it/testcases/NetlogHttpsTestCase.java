@@ -1,27 +1,7 @@
 package com.seven.asimov.it.testcases;
 
-import com.seven.asimov.it.base.AsimovTestCase;
 import com.seven.asimov.it.base.TcpDumpTestCase;
-import com.seven.asimov.it.base.TimeInfoTransaction;
-import com.seven.asimov.it.base.constants.TFConstantsIF;
-import com.seven.asimov.it.tests.crcs.netlog.NetlogHttpsTests;
-import com.seven.asimov.it.utils.PrepareResourceUtil;
 import com.seven.asimov.it.utils.SocketFactoryUtil;
-import com.seven.asimov.it.utils.TestUtil;
-import com.seven.asimov.it.utils.logcat.LogcatUtil;
-import com.seven.asimov.it.utils.logcat.tasks.crcsTasks.NetlogTask;
-import com.seven.asimov.it.utils.logcat.wrappers.NetlogEntry;
-import com.seven.asimov.it.utils.tcpdump.*;
-import junit.framework.AssertionFailedError;
-import org.apache.commons.lang.exception.ExceptionUtils;
-
-import javax.net.ssl.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +10,7 @@ public class NetlogHttpsTestCase extends TcpDumpTestCase {
 
     private static SocketFactoryUtil.CustomSocketFactory socketFactory = new SocketFactoryUtil.CustomSocketFactory();
 
-    protected TimeInfoTransaction testNetlogHttpsSuite(NetlogHttpsTests.CipherSuite suite) throws Exception {
+  /* protected TimeInfoTransaction testNetlogHttpsSuite(NetlogHttpsTests.CipherSuite suite) throws Exception {
 
         TimeInfoTransaction timeInfoTransaction = new TimeInfoTransaction();
 
@@ -219,7 +199,7 @@ public class NetlogHttpsTestCase extends TcpDumpTestCase {
         return null;
     }
 
-    protected HttpSession getNetworkSession(TcpDumpUtil tcpDump, TimeInfoTransaction timeInfoTransaction) {
+   /* protected HttpSession getNetworkSession(TcpDumpUtil tcpDump, TimeInfoTransaction timeInfoTransaction) {
         List<HttpSession> sessions = tcpDump.getHttpSessions(timeInfoTransaction.getTimeStart(), timeInfoTransaction.getTimeEnd());
         logger.info("Network session size : " + sessions.size());
         for (HttpSession session : sessions) {
@@ -250,7 +230,7 @@ public class NetlogHttpsTestCase extends TcpDumpTestCase {
             }
         }
         return null;
-    }
+    }   */
 
     private boolean trafficCorresponds(long a, long b) {
         return (Math.abs(a - b) <= 1);

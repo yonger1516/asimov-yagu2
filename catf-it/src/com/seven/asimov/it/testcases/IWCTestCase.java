@@ -1,6 +1,5 @@
 package com.seven.asimov.it.testcases;
 
-import android.util.Log;
 import com.seven.asimov.it.base.HttpRequest;
 import com.seven.asimov.it.base.HttpResponse;
 import com.seven.asimov.it.base.TcpDumpTestCase;
@@ -11,12 +10,15 @@ import com.seven.asimov.it.utils.TestUtil;
 import com.seven.asimov.it.utils.logcat.LogcatUtil;
 import com.seven.asimov.it.utils.logcat.tasks.pollingTasks.StartPollTask;
 import com.seven.asimov.it.utils.logcat.wrappers.StartPollWrapper;
-import com.seven.asimov.it.utils.pms.PMSUtil;
 import com.seven.asimov.it.utils.pms.Policy;
+import com.seven.asimov.it.utils.sa.SaRestUtil;
 import com.seven.asimov.it.utils.sms.SmsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IWCTestCase extends TcpDumpTestCase {
-    private static final String TAG = IWCTestCase.class.getSimpleName();
+    private static final Logger logger= LoggerFactory.getLogger(IWOCTestCase.class);
+    //private static final String TAG = IWCTestCase.class.getSimpleName();
 
     public static final int AGGRESSIVENESS_LEVEL_0 = 0;
     public static final int AGGRESSIVENESS_LEVEL_1 = 1;
@@ -30,8 +32,8 @@ public class IWCTestCase extends TcpDumpTestCase {
     private static final int RADIO_KEEPER_DELAY_MS = 3 * 1000;
     private static final int DORMANCY_TIMEOUT_SEC = 15;
 
-    private static final String AGGRESSIVENESS_REST_PROPERTY_PATH = "@asimov@http";
-    private static final String AGGRESSIVENESS_REST_PROPERTY_NAME = "cache_invalidate_aggressiveness";
+    private static final String AGGRESSIVENESS_REST_PROPERTY_PATH = "optimization@http";
+    private static final String AGGRESSIVENESS_REST_PROPERTY_NAME = "cacheInvalidateAggressiveness";
     public static String VALID_RESPONSE = "tere";
 
     public enum RadioState {
@@ -45,14 +47,17 @@ public class IWCTestCase extends TcpDumpTestCase {
     protected void checkAggressiveIWC(String resource, int aggressivenessLevel, ScreenState screenState,
                                       RadioState radioState, boolean isLongPolling, boolean invalidateReceived)
             throws Throwable {
+        Policy policy=new Policy(AGGRESSIVENESS_REST_PROPERTY_NAME, String.valueOf(aggressivenessLevel), AGGRESSIVENESS_REST_PROPERTY_PATH, true);
         ScreenUtils.ScreenSpyResult spy = null;
 
         try {
-            PMSUtil.addPoliciesWithCheck(new Policy[]{new Policy(AGGRESSIVENESS_REST_PROPERTY_NAME, String.valueOf(aggressivenessLevel), AGGRESSIVENESS_REST_PROPERTY_PATH, true)});
+            SaRestUtil.updateParameter(policy);
 
+            logger.trace("setting screen spy...");
             spy = ScreenUtils.switchScreenAndSpy(getContext(),
                     screenState == ScreenState.SCREEN_ON);
 
+            logger.trace("start business action");
             if (radioState == RadioState.RADIO_UP) {
                 TestCaseThread radioUpKeeperThread = createRadioUpKeeperThread();
                 if (isLongPolling) {
@@ -76,7 +81,7 @@ public class IWCTestCase extends TcpDumpTestCase {
             if (null != spy) {
                 ScreenUtils.finishScreenSpy(getContext(), spy);
             }
-            PMSUtil.cleanPaths(new String[]{AGGRESSIVENESS_REST_PROPERTY_PATH});
+            //SaRestUtil.cleanParameter(policy);
         }
     }
 
@@ -86,6 +91,8 @@ public class IWCTestCase extends TcpDumpTestCase {
             public void run() throws Throwable {
                 final String uri = createTestResourceUri("asimov_it_test_radio_up", false);
                 while (!isInterruptedSoftly()) {
+
+                    logger.debug("Sending a ping...");
                     sendRequestWithoutLogging(createRequest().setUri(uri).setMethod("GET").getRequest());
                     TestUtil.sleep(RADIO_KEEPER_DELAY_MS);
                 }
@@ -124,7 +131,7 @@ public class IWCTestCase extends TcpDumpTestCase {
                     logcatUtil.stop();
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-                    Log.i(TAG, "Start poll wrapper object" + startPoll);
+                    logger.info( "Start poll wrapper object" + startPoll);
                     PrepareResourceUtil.prepareResourceWithDelayedChange(uri, DORMANCY_TIMEOUT_SEC);
                     long preparationEnd = System.currentTimeMillis();
                     long preparationDelay = preparationEnd - preparationStart;
@@ -197,7 +204,7 @@ public class IWCTestCase extends TcpDumpTestCase {
                     logcatUtil.stop();
                     assertTrue("Start of polling should be reported in client log", !startPollTask.getLogEntries().isEmpty());
                     final StartPollWrapper startPoll = startPollTask.getLogEntries().get(startPollTask.getLogEntries().size() - 1);
-                    Log.i(TAG, "Start poll wrapper object" + startPoll);
+                    logger.info("Start poll wrapper object" + startPoll);
                     long preparationEnd = System.currentTimeMillis();
                     long preparationDelay = preparationEnd - preparationStart;
 

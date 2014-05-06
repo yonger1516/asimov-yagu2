@@ -2,17 +2,44 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>OCVersion</comment>
+
+
+    <!--test running environment settings-->
     <entry key="oc_version">${oc_version}</entry>
     <entry key="ip_version">${ip_version}</entry>
     <entry key="start_checks">${start_checks}</entry>
     <entry key="policy_wifi">true</entry>
 
     <entry key="emulator_name">functional_tests</entry>
-    <entry key="rest.server.address">system.relay_host</entry>
-    <entry key="rest.server.port">8081</entry>
+    <entry key="rest.server.port">8080</entry>
     <entry key="rest.server.sms.port">7070</entry>
     <entry key="system.pms.server.port">8087</entry>
     <entry key="netlog_version">13</entry>
+
+    <!--<comment>Testrunners</comment>-->
+    <entry key="ipv4_testrunner">hzs-qa-testrunner1.7sys.net</entry>
+    <entry key="ipv6_testrunner">rwc-qa-testrunner1.7sys.eu</entry>
+    <entry key="testrunner">${testrunner}</entry>
+    <entry key="testrunner.port">8099</entry>
+
+    <entry key="ga_vendor">seven.com</entry>
+
+    <entry key="tests_results_dir">/mnt/sdcard/OCIntegrationTestsResults/</entry>
+    <entry key="oc_primary_dir">/data/misc/openchannel</entry>
+
+    <entry key="oc_package_name">com.seven.asimov</entry>
+    <entry key="oc_process_name">com.seven.asimov</entry>
+
+
+    <entry key="oc_server_version">2.3.</entry>
+    <entry key="oc_supported_server_versions">2.1.@2.2.@2.3.@2.4.@2.5.</entry>
+
+    <!--<comment>LogcatUtil path</comment>-->
+    <entry key="logcat_util.swap">/sdcard/logcat_swap/</entry>
+    <entry key="logcat_util.debug">/sdcard/logcat_debug/</entry>
+
+
+    <!--test cases settings-->
 
     <!--<comment>TcpDumpConstants</comment>-->
     <entry key="dns_port">53</entry>
@@ -28,7 +55,6 @@
     <entry key="http_tc_port_2">8765</entry>
 
     <entry key="min_dispatcher_port">65000</entry>
-    <entry key="oc_bypass_port">8099</entry>
     <entry key="z7tp_relay_port">7735</entry>
 
     <entry key="byte_size">1</entry>
@@ -47,13 +73,7 @@
     <entry key="packet_type_to_us">0</entry>
     <entry key="packet_type_from_us">4</entry>
 
-    <entry key="ga_vendor">seven.com</entry>
 
-    <entry key="tests_results_dir">/mnt/sdcard/OCIntegrationTestsResults/</entry>
-    <entry key="oc_primary_dir">/data/misc/openchannel</entry>
-
-    <entry key="oc_package_name">com.seven.asimov</entry>
-    <entry key="oc_process_name">com.seven.asimov</entry>
     <entry key="oc_http_proxy_port">8088</entry>
 
     <entry key="header_connection">Connection</entry>
@@ -122,8 +142,6 @@
 
     <entry key="it_package_name">com.seven.asimov.it</entry>
 
-    <entry key="oc_server_version">2.3.</entry>
-    <entry key="oc_supported_server_versions">2.1.@2.2.@2.3.@2.4.@2.5.</entry>
 
     <!--<comment>Traffic condition constants</comment>-->
     <entry key="traffic_property_name">traffic</entry>
@@ -132,17 +150,10 @@
     <entry key="traffic_in_action_property_path_template">@asimov@application@%s@scripts@%s@actions</entry>
     <entry key="traffic_out_action_property_path_template">@asimov@application@%s@scripts@%s@exit_actions</entry>
 
-    <!--<comment>Testrunners</comment>-->
-    <entry key="ipv4_testrunner">tln-dev-testrunner1.7sys.eu</entry>
-    <entry key="ipv6_testrunner">rwc-qa-testrunner1.7sys.eu</entry>
-    <entry key="testrunner">${testrunner}</entry>
-
     <!--<comment>Destination ports to detect loopback packet direction</comment>-->
     <entry key="dst.port.http">80</entry>
     <entry key="dst.port.https">443</entry>
     <entry key="dst.port.dns">53</entry>
 
-    <!--<comment>LogcatUtil path</comment>-->
-    <entry key="logcat_util.swap">/sdcard/logcat_swap/</entry>
-    <entry key="logcat_util.debug">/sdcard/logcat_debug/</entry>
+
 </properties>

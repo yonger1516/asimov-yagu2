@@ -1,4 +1,4 @@
-package com.seven.asimov.it.model.cms;
+package com.seven.asimov.it.rest.model;
 
 public class Credentials {
     private String username;

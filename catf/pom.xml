@@ -27,16 +27,17 @@
         <branding_file>${target}.target</branding_file>
         <branding_property>brand.properties</branding_property>
         <default_branding_file>default.target</default_branding_file>
-        <oc_version>2.3.1</oc_version>
+        <oc_version>3.0</oc_version>
         <ip_version>4</ip_version>
-        <start_checks>true</start_checks>
+        <start_checks>false</start_checks>
         <testrunner></testrunner>
-        <logcatLevel>DEBUG</logcatLevel>
+        <logcatLevel>TRACE</logcatLevel>
         <logLevel>TRACE</logLevel>
         <logFilePath>/sdcard/OCIntegrationTestsResults/logcat</logFilePath>
         <logbackFilePath>/sdcard/OCIntegrationTestsResults/logback</logbackFilePath>
         <logFileName>tf_logcat_${logLevel}.log</logFileName>
     </properties>
+
     <version>3.0-SNAPSHOT</version>
     <groupId>com.seven.asimov.it</groupId>
     <artifactId>asimov-client-tf</artifactId>
@@ -78,19 +79,20 @@
                 <version>2.3.2</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${project.jdk}</source>
+                    <target>${project.jdk}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${android.plugin.version}</version>
                 <configuration>
                     <sdk>
-                        <platform>10</platform>
+                        <platform>${platform.sdk}</platform>
                     </sdk>
                     <extractDuplicates>true</extractDuplicates>
+
                 </configuration>
                 <extensions>true</extensions>
             </plugin>
@@ -187,6 +189,10 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>commons-net</groupId>
@@ -209,18 +215,19 @@
             <version>3.1</version>
             <scope>provided</scope>
         </dependency>
+
+
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android-test</artifactId>
-            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>oauth.signpost</groupId>
             <artifactId>signpost-core</artifactId>
@@ -291,6 +298,7 @@
         </dependency>
 
 
+
         <!--resteasy support-->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -312,27 +320,76 @@
             <artifactId>jackson-xc</artifactId>
             <version>1.9.13</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>jaxrs-api</artifactId>
             <version>3.0.8.Final</version>
-        </dependency>
+        </dependency>  -->
         <dependency>
             <groupId>org.jboss.resteasy.mobile</groupId>
             <artifactId>resteasy-mobile</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-jaxrs</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>jaxrs-api</artifactId>
+                </exclusion>
+                <!--<exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion> -->
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxrs</artifactId>
+                </exclusion>
+            </exclusions>
+            <version>3.0.8.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-multipart-provider</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxrs</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxb-provider</artifactId>
+                </exclusion>
+            </exclusions>
             <version>3.0.8.Final</version>
         </dependency>
 
+
+       <!-- <dependency>
+            <groupId>org.codehaus.enunciate</groupId>
+            <artifactId>enunciate-core</artifactId>
+            <version>1.28</version>
+        </dependency> -->
+
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.2.1</version>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jtransfo</groupId>
+            <artifactId>jtransfo-core</artifactId>
+            <version>0.12</version>
         </dependency>
 
 

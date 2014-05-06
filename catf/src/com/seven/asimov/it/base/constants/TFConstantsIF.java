@@ -22,7 +22,7 @@ public interface TFConstantsIF {
 
     public static final Integer MIN_DISPATCHER_PORT = PropertyLoadUtil.getIntegerProperty("min_dispatcher_port");
 
-    public static final Integer OC_BYPASS_PORT = PropertyLoadUtil.getIntegerProperty("oc_bypass_port");
+    public static final Integer TESTRUNNER_PORT = PropertyLoadUtil.getIntegerProperty("testrunner.port");
 
     public static final Integer Z7TP_RELAY_PORT = PropertyLoadUtil.getIntegerProperty("z7tp_relay_port");
 
@@ -59,9 +59,7 @@ public interface TFConstantsIF {
     public static final String HKI_ADM02_HOST = PropertyLoadUtil.getProperty("hki_adm02.host");
     public static final String SERVER_LOG_DOWNLOAD_ENABLED = PropertyLoadUtil.getProperty("server_log_download_enabled");
 
-    //E2ETestConstants
-    public static final String REST_SERVER_ADDRESS = PropertyLoadUtil.getProperty("rest.server.address");
-    public static final Integer REST_SERVER_PORT = PropertyLoadUtil.getIntegerProperty("rest.server.port");
+
     /**
      * The Rest Serve port which is listen by the SMPP server.
      */
@@ -79,6 +77,12 @@ public interface TFConstantsIF {
     public static String mPmsServerIp = EXTERNAL_IP;
     public static Integer mPmsServerPort = PMS_SERVER_PORT;
     public static String mEmulatorVendor = GA_VENDOR;
+
+
+    //E2ETestConstants
+    //public static final String REST_SERVER_ADDRESS = PropertyLoadUtil.getProperty("rest.server.address");
+    public static final String REST_SERVER_ADDRESS = EXTERNAL_IP;
+    public static final Integer REST_SERVER_PORT = PropertyLoadUtil.getIntegerProperty("rest.server.port");
 
     //OpenChannelHelper
     public static final String TARGET_NAME = "com.seven.asimov";

@@ -1,13 +1,16 @@
+/*
 package com.seven.asimov.it.tests.crcs.netlog;
 
 import android.test.suitebuilder.annotation.LargeTest;
 import com.seven.asimov.it.annotation.Ignore;
 import com.seven.asimov.it.testcases.NetlogHttpsTestCase;
 
+*/
 /**
  * <h2>This class tests OCC's Netlog functionality for http requests.</h2>
  * ASMV-21417 Fix Netlog suite
- */
+ *//*
+
 public class NetlogHttpsTests extends NetlogHttpsTestCase {
 
     public enum CipherSuite {
@@ -49,7 +52,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
     }
 
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -60,13 +64,15 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      *     <li>check that netlog data for client_in, client_out, server_in, server_out correspond to tcpdump data</li>
      * </ol>
      * @throws Exception
-     */
+     *//*
+
     @LargeTest
     public void test_001_Netlog_SSL_RSA_WITH_RC4_128_MD5() throws Exception {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_WITH_RC4_128_MD5);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -77,13 +83,15 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      *     <li>check that netlog data for client_in, client_out, server_in, server_out correspond to tcpdump data</li>
      * </ol>
      * @throws Exception
-     */
+     *//*
+
     @LargeTest
     public void test_002_Netlog_SSL_RSA_WITH_RC4_128_SHA() throws Throwable {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_WITH_RC4_128_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -94,13 +102,15 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      *     <li>check that netlog data for client_in, client_out, server_in, server_out correspond to tcpdump data</li>
      * </ol>
      * @throws Exception
-     */
+     *//*
+
     @LargeTest
     public void test_003_Netlog_TLS_RSA_WITH_AES_128_CBC_SHA() throws Throwable {
         testNetlogHttpsSuite(CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -111,13 +121,15 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      *     <li>check that netlog data for client_in, client_out, server_in, server_out correspond to tcpdump data</li>
      * </ol>
      * @throws Exception
-     */
+     *//*
+
     @LargeTest
     public void test_004_Netlog_TLS_RSA_WITH_AES_256_CBC_SHA() throws Throwable {
         testNetlogHttpsSuite(CipherSuite.TLS_RSA_WITH_AES_256_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -129,7 +141,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -137,7 +150,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -149,7 +163,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -157,7 +172,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -169,7 +185,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -177,7 +194,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -189,7 +207,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -197,7 +216,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.TLS_DHE_DSS_WITH_AES_256_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -208,13 +228,15 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      *     <li>check that netlog data for client_in, client_out, server_in, server_out correspond to tcpdump data</li>
      * </ol>
      * @throws Exception
-     */
+     *//*
+
     @LargeTest
     public void test_009_Netlog_SSL_RSA_WITH_3DES_EDE_CBC_SHA() throws Throwable {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_WITH_3DES_EDE_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -226,7 +248,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -234,7 +257,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -246,7 +270,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -254,7 +279,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -265,13 +291,15 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      *     <li>check that netlog data for client_in, client_out, server_in, server_out correspond to tcpdump data</li>
      * </ol>
      * @throws Exception
-     */
+     *//*
+
     @LargeTest
     public void test_012_Netlog_SSL_RSA_WITH_DES_CBC_SHA() throws Throwable {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_WITH_DES_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -283,7 +311,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -291,7 +320,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DHE_RSA_WITH_DES_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -303,7 +333,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -311,7 +342,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DHE_DSS_WITH_DES_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -323,7 +355,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -331,7 +364,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_EXPORT_WITH_RC4_40_MD5);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -343,7 +377,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -351,7 +386,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_EXPORT_WITH_DES40_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -363,7 +399,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -371,7 +408,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -383,7 +421,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -391,7 +430,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -403,7 +443,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -411,7 +452,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_WITH_NULL_MD5);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -423,7 +465,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -431,7 +474,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_RSA_WITH_NULL_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -443,7 +487,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -451,7 +496,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DH_anon_WITH_RC4_128_MD5);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -463,7 +509,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -471,7 +518,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.TLS_DH_anon_WITH_AES_128_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -483,7 +531,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -491,7 +540,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.TLS_DH_anon_WITH_AES_256_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -503,7 +553,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -511,7 +562,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DH_anon_WITH_3DES_EDE_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -523,7 +575,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -531,7 +584,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DH_anon_WITH_DES_CBC_SHA);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -543,7 +597,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -551,7 +606,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DH_anon_EXPORT_WITH_RC4_40_MD5);
     }
 
-    /**
+    */
+/**
      * <h3>Verify OC works correctly and client_in, client_out, server_in, server_out.</h3>
      * actions:
      * <ol>
@@ -563,7 +619,8 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
      * </ol>
      * @throws Exception
      * This cipher suite is not supported.
-     */
+     *//*
+
     //@Execute
     @Ignore
     @LargeTest
@@ -571,3 +628,4 @@ public class NetlogHttpsTests extends NetlogHttpsTestCase {
         testNetlogHttpsSuite(CipherSuite.SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA);
     }
 }
+*/

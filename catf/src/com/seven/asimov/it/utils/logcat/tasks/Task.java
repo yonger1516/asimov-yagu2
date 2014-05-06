@@ -5,7 +5,6 @@ import com.seven.asimov.it.utils.date.DateUtil;
 import com.seven.asimov.it.utils.date.TimeZones;
 import com.seven.asimov.it.utils.logcat.LogcatUtil;
 import com.seven.asimov.it.utils.logcat.wrappers.LogEntryWrapper;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,7 +166,6 @@ public abstract class Task<T extends LogEntryWrapper> {
         int hour = 0;
         if (changeTimestampToGMT) {
             TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-            //            logger.trace("Set timezone to GMT");
             try {
                 hour = TimeZones.valueOf(matcher.group(timeZoneIndex)).getId();
             } catch (IllegalArgumentException e) {
