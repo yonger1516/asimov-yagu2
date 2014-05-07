@@ -70,7 +70,7 @@ public enum OnStartChecks {
     public void fullStartCheck() throws Exception {
         checkClientRegistrationWithServer();
         checkMSISDNvalidation();
-        checkFirstTimePolicyRetrieved();
+        //checkFirstTimePolicyRetrieved();
         //  checkFirstFirewallPolicyRetrieved();
         checkOcAndDispathcersCrash();
         checkTestRunnerAvailable();

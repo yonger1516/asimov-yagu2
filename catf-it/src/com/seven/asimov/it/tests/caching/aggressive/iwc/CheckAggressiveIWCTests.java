@@ -2,6 +2,7 @@ package com.seven.asimov.it.tests.caching.aggressive.iwc;
 
 import android.test.suitebuilder.annotation.LargeTest;
 import com.seven.asimov.it.annotation.DeviceOnly;
+import com.seven.asimov.it.annotation.Ignore;
 import com.seven.asimov.it.testcases.IWCTestCase;
 
 @DeviceOnly
@@ -270,6 +271,8 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_RiScreenOnRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_1_RI_SCREEN_ON_RADIO_UP, AGGRESSIVENESS_LEVEL_1,
@@ -296,6 +299,8 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_RiScreenOnRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_1_RI_SCREEN_ON_RADIO_DOWN, AGGRESSIVENESS_LEVEL_1,
@@ -322,6 +327,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_RiScreenOffRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_1_RI_SCREEN_OFF_RADIO_UP, AGGRESSIVENESS_LEVEL_1,
@@ -343,6 +349,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_RiScreenOffRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_1_RI_SCREEN_OFF_RADIO_DOWN, AGGRESSIVENESS_LEVEL_1,
@@ -368,6 +375,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_LpScreenOnRadioUp() throws Throwable {
         //AIWC_10
@@ -394,6 +402,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_LpScreenOnRadioDown() throws Throwable {
         //AIWC_09   , 12
@@ -421,6 +430,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_LpScreenOffRadioUp() throws Throwable {
         //AIWC_11
@@ -443,6 +453,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_1_LpScreenOffRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_1_LP_SCREEN_OFF_RADIO_DOWN, AGGRESSIVENESS_LEVEL_1,
@@ -469,6 +480,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_RiScreenOnRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_2_RI_SCREEN_ON_RADIO_UP, AGGRESSIVENESS_LEVEL_2,
@@ -493,6 +505,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_RiScreenOnRadioDown() throws Throwable {
            checkAggressiveIWC(IWC_2_RI_SCREEN_ON_RADIO_DOWN, AGGRESSIVENESS_LEVEL_2,
@@ -517,6 +530,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_RiScreenOffRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_2_RI_SCREEN_OFF_RADIO_UP, AGGRESSIVENESS_LEVEL_2,
@@ -538,6 +552,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_RiScreenOffRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_2_RI_SCREEN_OFF_RADIO_DOWN, AGGRESSIVENESS_LEVEL_2,
@@ -559,6 +574,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_LpScreenOnRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_2_LP_SCREEN_ON_RADIO_UP, AGGRESSIVENESS_LEVEL_2,
@@ -580,6 +596,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     public void testAggressiveIWC_2_LpScreenOnRadioDown() throws Throwable {
             checkAggressiveIWC(IWC_2_LP_SCREEN_ON_RADIO_DOWN, AGGRESSIVENESS_LEVEL_2,
                     ScreenState.SCREEN_ON, RadioState.RADIO_DOWN, true, false);
@@ -600,6 +617,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_LpScreenOffRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_2_LP_SCREEN_OFF_RADIO_UP, AGGRESSIVENESS_LEVEL_2,
@@ -621,6 +639,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_2_LpScreenOffRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_2_LP_SCREEN_OFF_RADIO_DOWN, AGGRESSIVENESS_LEVEL_2,
@@ -646,6 +665,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_RiScreenOnRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_3_RI_SCREEN_ON_RADIO_UP, AGGRESSIVENESS_LEVEL_3,
@@ -667,6 +687,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_RiScreenOnRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_3_RI_SCREEN_ON_RADIO_DOWN, AGGRESSIVENESS_LEVEL_3,
@@ -690,6 +711,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_RiScreenOffRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_3_RI_SCREEN_OFF_RADIO_UP, AGGRESSIVENESS_LEVEL_3,
@@ -711,6 +733,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_RiScreenOffRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_3_RI_SCREEN_OFF_RADIO_DOWN, AGGRESSIVENESS_LEVEL_3,
@@ -732,6 +755,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_LpScreenOnRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_3_LP_SCREEN_ON_RADIO_UP, AGGRESSIVENESS_LEVEL_3,
@@ -753,6 +777,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_LpScreenOnRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_3_LP_SCREEN_ON_RADIO_DOWN, AGGRESSIVENESS_LEVEL_3,
@@ -774,6 +799,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_LpScreenOffRadioUp() throws Throwable {
         checkAggressiveIWC(IWC_3_LP_SCREEN_OFF_RADIO_UP, AGGRESSIVENESS_LEVEL_3,
@@ -795,6 +821,7 @@ public class CheckAggressiveIWCTests extends IWCTestCase {
      *
      * @throws Throwable
      */
+    @Ignore
     @LargeTest
     public void testAggressiveIWC_3_LpScreenOffRadioDown() throws Throwable {
         checkAggressiveIWC(IWC_3_LP_SCREEN_OFF_RADIO_DOWN, AGGRESSIVENESS_LEVEL_3,

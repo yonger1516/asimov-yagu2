@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import com.seven.asimov.it.base.AsimovTestCase;
-import com.seven.asimov.it.base.ServerLogsDownloader;
 import com.seven.asimov.it.base.androidtest.FixtureSharingTestRunner;
 import com.seven.asimov.it.base.constants.BaseConstantsIF;
 import com.seven.asimov.it.base.constants.TFConstantsIF;
@@ -91,7 +90,7 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
 
             checkNetworkAvailability();  //move the check network function to the begin
 
-            PMSUtil.setContext(staticContext);
+            //PMSUtil.setContext(staticContext);
             DateUtil.setTimeZoneOnDevice(getContext(), TimeZone.getTimeZone("GMT"));
             DateUtil.syncTimeWithTestRunner();
             mFilesDir = getTargetContext().getFilesDir().getAbsolutePath();
@@ -263,62 +262,22 @@ public class IntegrationTestRunnerGa extends FixtureSharingTestRunner {
         logger.info("Current device is: " + Build.MODEL);
         logger.info("Current SDK is: " + Build.VERSION.SDK_INT);
 
-        /*
-         * PMSUtil.getPmsServerIp() starts TFProperties loading TF constants.
-         * TFProperties performs checks and throws exception if needed
-         */
-        try {
-            logger.info("PMSUtil.getPmsServerIp() = " + PMSUtil.getPmsServerIp());
-        } catch (Throwable tr) {
-            logger.error(ExceptionUtils.getStackTrace(tr));
-            endSuite(new Exception(tr));
-        }
-        String[] mkdir = {"su", "-c", "mkdir /data/misc/openchannel"};
-        String[] chmod = {"su", "-c", "chmod 777 /data/misc/openchannel"};
-        String[] chmodIpTables = {"su", "-c", "chmod  777 " + TFConstantsIF.PATH};
-        String install = "am broadcast -a android.intent.action.OC_ENGINE_INSTALL";
-        String[] dispatchers = {"su", "-c", "/data/misc/openchannel/ocd &"};
-        String run = "am broadcast -a android.intent.action.OC_ENGINE";
 
-        String[] startService = new String[]{"su", "-c", "am startservice com.seven.asimov/.ocengine.OCEngineService"};
-
-        if (Build.MODEL.equals("functional_tests") && !OCUtil.isOpenChannelRunning()) {
-            Runtime.getRuntime().exec(mkdir).waitFor();
-            Runtime.getRuntime().exec(chmod).waitFor();
-            Runtime.getRuntime().exec(chmodIpTables).waitFor();
-            Runtime.getRuntime().exec(install).waitFor();
-            logger.debug("asimov ocengine installed");
-            TestUtil.sleep(20000);
-            Runtime.getRuntime().exec(dispatchers).waitFor();
-            logger.debug("oc dispatchers started");
-            TestUtil.sleep(25000);
-            Runtime.getRuntime().exec(run).waitFor();
-            logger.debug("asimov ocengine started");
-            TestUtil.sleep(60000);
-        } else {
-            Runtime.getRuntime().exec(startService).waitFor();
-            TestUtil.sleep(60000);
-        }
-        //-------//
-        //Resolve host for fix problem:
-        //[https_task.cpp:70] (-14) - FC [...]: failed to back-resolve IP ..., will bypass connection
         try {
             DnsUtil.resolveHost(AsimovTestCase.TEST_RESOURCE_HOST);
         } catch (Exception e) {
             logger.warn("The Host " + AsimovTestCase.TEST_RESOURCE_HOST + " was not resolved. May have problems in some tests");
         }
-        //-------//
-        //PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);  //disable force update,so
+
     }
 
     @Override
     protected void tearDown() throws Exception {
-        //PMSUtil.clearPoliciesByRegexp("forUpdate.*", POLICY_UPDATE_PATH);   //disable force update, so
+
         DateUtil.resetDeviceTimeZoneToDefault(getContext());
         DateUtil.syncTimeWithTestRunner();
-        ServerLogsDownloader.getServerLogs(getContext());
-//        String[] killoc = { "su", "-c", "killall occ" };
-//        Runtime.getRuntime().exec(killoc).waitFor();
+        //ServerLogsDownloader.getServerLogs(getContext());
+
         TestUtil.sleep(15 * 1000);
     }
 
