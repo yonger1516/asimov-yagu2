@@ -1,0 +1,35 @@
+# This is the default target branding file for all components
+# 
+# Variables defined in this file are searched from the
+# brandable resources and replaced with the provided values.
+#
+# For example, if we have defined 'relay.hostname=alpha.seven.com' in this file,
+# all occurances of '@relay.hostname@' in the brandable files 
+# are replaced with 'alpha.seven.com'.
+#
+# Follow these instructions with the branding files: 
+# - This file MUST be saved as UTF-8.
+# - This file MUST NOT contain any text that needs localization
+#
+
+# -----------------------------------------------
+# System wide configuration parameters
+# -----------------------------------------------
+
+system.relay_host=localhost
+system.client.relay_port=7735
+system.msisdn_validation_phonenumber=+16507141250
+system.msisdn_validation_keyword=z7
+
+# -----------------------------------------------
+# System wide server configuration parameters
+# -----------------------------------------------
+
+# URLs
+system.baseurl=http://localhost:7080
+
+
+client.provisioning.id=@brand_identifier@
+client.msisdn_validation_enabled=0
+
+

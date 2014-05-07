@@ -1,0 +1,98 @@
+ # This is the default target branding file for all components
+#
+# Variables defined in this file are searched from the
+# brandable resources and replaced with the provided values.
+#
+# For example, if we have defined 'relay.hostname=alpha.seven.com' in this file,
+# all occurances of '@relay.hostname@' in the brandable files
+# are replaced with 'alpha.seven.com'.
+#
+# Follow these instructions with the branding files:
+# - This file MUST be saved as UTF-8.
+# - This file MUST NOT contain any text that needs localization
+#
+
+# -----------------------------------------------
+# System wide configuration parameters
+# -----------------------------------------------
+
+# Identification
+
+system.relay_host=teng052.seven.com
+system.client.relay_port=7735
+
+# -----------------------------------------------
+# System wide server configuration parameters
+# -----------------------------------------------
+
+# Identification
+# URLs
+system.baseurl=http://teng052.seven.com
+
+# -----------------------------------------------
+# Android client configuration parameters
+# -----------------------------------------------
+client.android.enable_trigger=1
+client.android.debuggable=true
+client.build.skip_proguard=true
+#client.provisioning.id=ocgsm
+
+
+
+#client.keepalive_timeout=120
+client.inactivity_timeout=180
+client.android.logicaly_closed_timeout=5
+
+# No HTTP redirection
+#client.openchannel.redirection.server1.host=
+#client.openchannel.redirection.server1.port=0
+#client.openchannel.redirection.server1.capabilities=0
+#client.openchannel.redirection.server1.function=0
+
+# No HTTPS redirection to proxy at 208.87.206.211:7443
+#client.openchannel.redirection.server2.host=
+#client.openchannel.redirection.server2.port=0
+#client.openchannel.redirection.server2.capabilities=0
+#client.openchannel.redirection.server2.function=0
+
+client.openchannel.redirection.failover.enabled=0
+client.openchannel.rooted_devices_build=1
+
+#Open channel Total Cache size in bytes
+#client.openchannel.cache.totalsize=10485760
+client.openchannel.cache.totalsize=52428800
+client.openchannel.cache.percenttotalsize=10
+client.openchannel.cache.spacecheckinterval=100
+#Custom dispatchers configuration
+client.openchannel.dispatcher.pdp.http.enabled=1
+
+
+# -----------------------------------------------
+# Client log settings
+# -----------------------------------------------
+
+#client.default_log_level=7
+
+client.default_log_level=7
+client.engine_default_log_level=5
+client.dispatchers_default_log_level=5
+client.controller_default_log_level=5
+
+
+# -----------------------------------------------
+# MSISDN configuration parameters
+# -----------------------------------------------
+#client.msisdn_validation_protocol=http
+#client.msisdn_validation_url=@system.baseurl@/msisdnapi/msisdn_validation_api/setAndGetMsisdnInfo.do?content=
+#client.msisdn_validation_wait_time_minutes=1
+
+system.msisdn_validation_phonenumber=+447624802521
+
+client.msisdn_validation_protocol=sms
+client.msisdn_validation_enabled=1
+client.msisdn_validation_url=
+client.msisdn_validation_wait_time_minutes=5
+
+client.android.enable_trigger=1
+client.openchannel.roaming_failover.enabled=1
+client.openchannel.wifi_failover.enabled=1

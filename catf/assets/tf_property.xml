@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>OCVersion</comment>
+
+
+    <!--test running environment settings-->
+    <entry key="oc_version">2.3.1</entry>
+    <entry key="ip_version">4</entry>
+    <entry key="start_checks">false</entry>
+    <entry key="policy_wifi">true</entry>
+
+    <entry key="emulator_name">functional_tests</entry>
+    <entry key="rest.server.port">8080</entry>
+    <entry key="rest.server.sms.port">7070</entry>
+    <entry key="system.pms.server.port">8087</entry>
+    <entry key="netlog_version">13</entry>
+
+    <!--<comment>Testrunners</comment>-->
+    <entry key="ipv4_testrunner">hzs-qa-testrunner1.7sys.net</entry>
+    <entry key="ipv6_testrunner">rwc-qa-testrunner1.7sys.eu</entry>
+    <entry key="testrunner">hzs-qa-testrunner1.7sys.net</entry>
+    <entry key="testrunner.port">8099</entry>
+
+    <entry key="ga_vendor">seven.com</entry>
+
+    <entry key="tests_results_dir">/mnt/sdcard/OCIntegrationTestsResults/</entry>
+    <entry key="oc_primary_dir">/data/misc/openchannel</entry>
+
+    <entry key="oc_package_name">com.seven.asimov</entry>
+    <entry key="oc_process_name">com.seven.asimov</entry>
+
+
+    <entry key="oc_server_version">2.3.</entry>
+    <entry key="oc_supported_server_versions">2.1.@2.2.@2.3.@2.4.@2.5.</entry>
+
+    <!--<comment>LogcatUtil path</comment>-->
+    <entry key="logcat_util.swap">/sdcard/logcat_swap/</entry>
+    <entry key="logcat_util.debug">/sdcard/logcat_debug/</entry>
+
+
+    <!--test cases settings-->
+
+    <!--<comment>TcpDumpConstants</comment>-->
+    <entry key="dns_port">53</entry>
+    <entry key="dns_ll_port">8053</entry>
+    <entry key="dns_server_port">5359</entry>
+    <entry key="http_port">80</entry>
+    <entry key="http_ll_port">8080</entry>
+
+    <entry key="https_port">443</entry>
+    <entry key="https_split_port">47443</entry>
+    <entry key="https_ll_port">8443</entry>
+    <entry key="http_tc_port_1">7888</entry>
+    <entry key="http_tc_port_2">8765</entry>
+
+    <entry key="min_dispatcher_port">65000</entry>
+    <entry key="z7tp_relay_port">7735</entry>
+
+    <entry key="byte_size">1</entry>
+    <entry key="uint16_size">2</entry>
+    <entry key="uint32_size">4</entry>
+    <entry key="bits_in_byte">8</entry>
+
+    <entry key="tcp_proto_id">6</entry>
+    <entry key="udp_proto_id">17</entry>
+
+    <entry key="sll_length">16</entry>
+    <entry key="ip_header_length">20</entry>
+
+    <entry key="loopback_address_type">772</entry>
+
+    <entry key="packet_type_to_us">0</entry>
+    <entry key="packet_type_from_us">4</entry>
+
+
+    <entry key="oc_http_proxy_port">8088</entry>
+
+    <entry key="header_connection">Connection</entry>
+    <entry key="header_connection_close">close</entry>
+    <entry key="header_connection_keep_alive">keep-alive</entry>
+    <entry key="header_content_length">Content-Length</entry>
+    <entry key="socket_exception_rst_message">Connection reset by peer</entry>
+
+    <entry key="temp_failover">http://localhost/oc/set?tempFailover&amp;reason=</entry>
+    <entry key="indefinite_failover">http://localhost/oc/set?indefiniteFailover&amp;reason=%s&amp;value=%s</entry>
+    <entry key="dns_default_port">7053</entry>
+    <entry key="override_dns_server_port">5359</entry>
+    <entry key="override_dns_ttl">30</entry>
+    <entry key="default_dns_server_port">53</entry>
+    <entry key="default_dns_server">8.8.8.8</entry>
+    <entry key="default_dns_ttl">3600</entry>
+    <entry key="parent_chain">Z7PARENTCHAIN</entry>
+
+    <entry key="oc_ignore_all_certificate_exceptions">-1</entry>
+    <entry key="oc_check_all_certificate_exceptions">0</entry>
+    <entry key="oc_ignore_certificate_authority_exceptions">1</entry>
+    <entry key="oc_ignore_certificate_not_yet_valid_exception">2</entry>
+    <entry key="oc_ignore_certificate_expired_exception">4</entry>
+
+    <entry key="min_caching_period">21000</entry>
+
+    <!--<comment>Media state condition constants</comment>-->
+    <entry key="media_script_condition_path">@asimov@application@com.seven.asimov.it@scripts@mediascript</entry>
+    <entry key="in_conditions">@asimov@application@com.seven.asimov.it@scripts@mediascript@conditions</entry>
+    <entry key="out_conditions">@asimov@application@com.seven.asimov.it@scripts@mediascript@exit_conditions</entry>
+    <entry key="actions_conditions">@asimov@application@com.seven.asimov.it@scripts@mediascript@actions</entry>
+    <entry key="enter_conditions">conditions</entry>
+    <entry key="exit_conditions">exit_conditions</entry>
+    <entry key="actions">actions</entry>
+    <entry key="media_condition">media</entry>
+    <entry key="on">on</entry>
+    <entry key="off">off</entry>
+
+    <!--<comment>Policy</comment>-->
+    <entry key="min_entries_property_name">min_entries</entry>
+    <entry key="min_entries_property_path">@asimov@reporting@triggers@storage</entry>
+    <entry key="min_entries_property_value_5">5</entry>
+    <entry key="min_entries_property_value_10">10</entry>
+    <entry key="min_entries_property_value_25">25</entry>
+    <entry key="min_entries_property_value_40">40</entry>
+
+    <!--<comment>ServerLogsDownload</comment>-->
+    <entry key="hki_adm02.host">hki-adm02.corp.seven.com</entry>
+    <entry key="server_log_names_part_one">
+        client-update-admin-site.log@client-update-site.log@crcs-transaction.log@eventmon.log@nf-monitor.log@notification.log@pms-transaction.log@policy-delivery-system.log@policy-management-server.log@relay-monitor.log@relay-upc-transaction.log@relay.log@service-audit.log@tomcat-admin-upc-transaction.log@tomcat-admin.log@traffic-harmonizer.log@upc-baseline.log@watchdog-monitor.log@watchdog.log@z7-pms-rest.log@z7-services.log@z7-smpp-receiver.log@z7-tomcat-admin-monitor.log@z7-tomcat-admin.log@z7-tomcat-monitor.log@z7-tomcat.log
+    </entry>
+    <entry key="server_log_names_part_two">ukko-server.log</entry>
+    <entry key="server_log_download_enabled">0</entry>
+    <entry key="eng002_aps_part_one">ap9@ap10</entry>
+    <entry key="eng002_aps_part_two">ap11@ap12</entry>
+    <entry key="eng004_aps_part_one">ap22@ap23</entry>
+    <entry key="eng004_aps_part_two">ap24@ap25</entry>
+    <!--<comment>Please check Helsinki+Carrier+Servers at matrix.seven.com to find aps numbers You need. First and second-->
+        <!--for part_one logs. Else for part_two logs.-->
+    <!--</comment>-->
+    <entry key="custom_server_aps_part_one"></entry>
+    <entry key="custom_server_aps_part_two"></entry>
+
+    <entry key="facebook_package_name">com.facebook.android</entry>
+    <entry key="https_blacklist_path">@asimov@ssl@packages</entry>
+
+    <entry key="it_package_name">com.seven.asimov.it</entry>
+
+
+    <!--<comment>Traffic condition constants</comment>-->
+    <entry key="traffic_property_name">traffic</entry>
+    <entry key="traffic_in_condition_property_path_template">@asimov@application@%s@scripts@%s@conditions</entry>
+    <entry key="traffic_out_condition_property_path_template">@asimov@application@%s@scripts@%s@exit_conditions</entry>
+    <entry key="traffic_in_action_property_path_template">@asimov@application@%s@scripts@%s@actions</entry>
+    <entry key="traffic_out_action_property_path_template">@asimov@application@%s@scripts@%s@exit_actions</entry>
+
+    <!--<comment>Destination ports to detect loopback packet direction</comment>-->
+    <entry key="dst.port.http">80</entry>
+    <entry key="dst.port.https">443</entry>
+    <entry key="dst.port.dns">53</entry>
+
+
+</properties>
