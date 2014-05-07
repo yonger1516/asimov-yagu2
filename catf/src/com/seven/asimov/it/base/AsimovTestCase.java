@@ -38,6 +38,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -1128,6 +1129,7 @@ public class AsimovTestCase extends AndroidTestCase {
             timeOut = TIMEOUT;
 
         final ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(4);
+        List<ScheduledFuture> waitThreads=new ArrayList<ScheduledFuture>();
 
         Thread.UncaughtExceptionHandler h = new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread th, Throwable ex) {
@@ -1148,14 +1150,23 @@ public class AsimovTestCase extends AndroidTestCase {
                     if (t != null && getUncaughtExceptionHandler() != null)
                         getUncaughtExceptionHandler().uncaughtException(this, t);
                 }
+
+
             };
 
             wrapperThread.setUncaughtExceptionHandler(h);
-            executorService.schedule(wrapperThread, testCaseThread.getDelay(), TimeUnit.MILLISECONDS);
+            ScheduledFuture future=executorService.schedule(wrapperThread, testCaseThread.getDelay(), TimeUnit.MILLISECONDS);
+            waitThreads.add(future);
         }
 
+        for (ScheduledFuture f:waitThreads){
+            f.get();
+        }
+        logger.trace("all threads have done,shutdown threadpool");
+        executorService.shutdownNow();
+        /*
         executorService.shutdown();
-        executorService.awaitTermination(timeOut, TimeUnit.MILLISECONDS);
+        executorService.awaitTermination(timeOut, TimeUnit.MILLISECONDS);*/
     }
 
     protected void createCustomResponse(String uri, String body, String statusCode) {

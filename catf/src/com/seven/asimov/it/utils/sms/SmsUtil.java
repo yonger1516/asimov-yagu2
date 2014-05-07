@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
-import com.seven.asimov.it.base.constants.TFConstantsIF;
 import com.seven.asimov.it.utils.PropertyLoadUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -244,10 +243,11 @@ public class SmsUtil {
         stream.writeByte(INV_NOTIFY_TYPE);//Notification type
 
         //compatible with oc client 2.3.1 skyline
-        if (PropertyLoadUtil.ocVersion.equals("2.3.1")){
-             stream.writeByte(isIWC ? INV_W_CACHE_SIZE-2 : INV_WO_CACHE_SIZE-2);   //byte length from int to short
-             stream.writeShort((short)subscriptionID);
-        } else{
+        if (PropertyLoadUtil.ocVersion.equals("2.3.1")) {
+            logger.trace("oc version is " + PropertyLoadUtil.ocVersion + " enable compatible message");
+            stream.writeByte(isIWC ? INV_W_CACHE_SIZE - 2 : INV_WO_CACHE_SIZE - 2);   //byte length from int to short
+            stream.writeShort((short) subscriptionID);
+        } else {
             stream.writeByte(isIWC ? INV_W_CACHE_SIZE : INV_WO_CACHE_SIZE);
             stream.writeInt(subscriptionID);
         }

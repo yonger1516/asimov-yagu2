@@ -101,7 +101,6 @@ public class RestClientFactory {
             responseLogin = httpClient.execute(post);
 
             logger.trace(responseLogin.getStatusLine().toString());
-
         } finally {
             post.abort();
         }

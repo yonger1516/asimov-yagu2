@@ -4,6 +4,7 @@ import android.util.Log;
 import com.seven.asimov.it.base.interfaces.HttpUrlConnectionIF;
 import com.seven.asimov.it.utils.TestUtil;
 import com.seven.asimov.it.utils.logcat.LogcatUtil;
+import com.seven.asimov.it.utils.sa.SaRestUtil;
 import com.seven.asimov.it.utils.tcpdump.HttpSession;
 import com.seven.asimov.it.utils.tcpdump.Interface;
 import com.seven.asimov.it.utils.tcpdump.TcpDumpHelper;
@@ -849,10 +850,13 @@ public class TcpDumpTestCase extends AsimovTestCase implements HttpUrlConnection
         //logger.trace("runTest start");
         tcpDump = TcpDumpUtil.getInstance(getContext());
         tcpDump.start();
+        SaRestUtil.init();
         testStartTimestamp = System.currentTimeMillis();
         logger.trace("testStartTimestamp=" + testStartTimestamp + "  " + new Date(testStartTimestamp).toString());
 
         super.runTest();
+
+        SaRestUtil.close();
         tcpDump.stop();
         testEndTimestamp = System.currentTimeMillis();
         logger.trace("testEndTimestamp=" + testEndTimestamp + "  " + new Date(testEndTimestamp).toString());

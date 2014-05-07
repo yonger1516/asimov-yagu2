@@ -34,8 +34,8 @@ public class IWCTestCase extends TcpDumpTestCase {
             spy = ScreenUtils.switchScreenAndSpy(getContext(),
                     screenState == ScreenState.SCREEN_ON);
 
-            logger.trace("start business action");
             if (radioState == RadioState.RADIO_UP) {
+                logger.trace("radio should be up,case running");
                 TestCaseThread radioUpKeeperThread = createRadioUpKeeperThread();
                 if (isLongPolling) {
                     executeThreads(radioUpKeeperThread, createLongPollingThread(resource, LP_DELAY_MS,
@@ -46,6 +46,7 @@ public class IWCTestCase extends TcpDumpTestCase {
                                     radioUpKeeperThread));
                 }
             } else {
+                logger.trace("radio should be down,case running");
                 if (isLongPolling) {
                     executeThreads(createLongPollingThread(resource, LP_DELAY_MS,
                             LP_REQUEST_INTERVAL_MS, invalidateReceived));

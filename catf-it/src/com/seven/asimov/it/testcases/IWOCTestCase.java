@@ -134,7 +134,7 @@ public class IWOCTestCase extends TcpDumpTestCase {
             public void run() throws Throwable {
                 try {
                     PrepareResourceUtil.prepareResourceWithDelay(uri, LP_DELAY_MS / 1000);
-                    int requestId = 0;
+                    requestId = 0;
                     // (1) MISS
                     HttpResponse response = checkMiss(request, ++requestId, VALID_RESPONSE);
                     logSleeping(requestInterval - response.getDuration());
